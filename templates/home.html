@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block HEADER %}
+	<h2>{% block TITLE %}Home{% endblock %}</h2>
+{% endblock %}
+{% block CONTENT %}
+
+<ul>
+        <form action="/go_quiz/" method="get">
+        <input type="submit" value="Quiz"/>
+    </form>		
+</ul>
+{% endblock %}
