@@ -7,7 +7,7 @@ nav_order: 0
 Testing your knowledge with fast paced and timed questions.
 
 ## Team members
-Peer Schüßler
+Peer Schüßler<br>
 Oliver Hartmann
 
 ## Value Proposition
