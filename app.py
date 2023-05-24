@@ -20,7 +20,7 @@ def index():
 def go_home():
       return render_template('home.html')
 
-@app.route('/go_quiz/', methods=['GET'])  # Notice the 'methods' argument
+@app.route('/go_quiz/', methods=['GET'])  
 def answer():
     return render_template('quiz.html')
 
