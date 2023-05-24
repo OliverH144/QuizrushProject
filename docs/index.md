@@ -47,8 +47,12 @@ CREATE TABLE category( <br>
 
 ## Goals
 - planned:<br>
-  - Changing button text with java script<br>
   - Establishing and Integrating the DB<br>
+  - Completing the core gameplay functions
+  - visually pleasing design
+  - enabling users to choose from categories
+  - (user login)
+  - API 
 - achieved:<br>
 -  missed:<br>
 
