@@ -1,8 +1,37 @@
 <!DOCTYPE html>
-<html>
-    
+<html>  
 {% extends 'base.html' %}
 {% block HEADER %}
+<style>
+  .button {
+    display: inline-block;
+    padding: 10px 20px;
+    margin-right: 10px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  </style>
+  <script>
+    function changeColor() {
+        var button = document.getElementById('myButton');
+        var currentColor = button.style.backgroundColor;
+        
+        if (currentColor === 'white') {
+            button.style.backgroundColor = 'red';
+            button.style.color = 'white';
+            button.innerHTML = 'Weiß';
+            document.getElementById('heading').innerHTML = 'Weiß';
+        } else {
+            button.style.backgroundColor = 'white';
+            button.style.color = 'black';
+            button.innerHTML = 'Rot';
+            document.getElementById('heading').innerHTML = 'Rot';
+        }
+    }
+</script>
 	<h2>{% block TITLE %}Home{% endblock %}</h2>
 {% endblock %}
 {% block CONTENT %}
@@ -11,12 +40,16 @@
     <div class="container">
       <h1>Quiz Rush</h1>
       <div>
-        <a class="button" href="quiz1.html">Button 1</a>
-        <a class="button" href="quiz2.html">Button 2</a>
+        <a href="{{ url_for('get_quiz') }}"><button class="button">Quiz starten</button></a>
+        <a href="{{ url_for('get_quiz2') }}"><button class="button">Quiz starten 2</button></a>
         <a class="button" href="seite3.html">Button 3</a>
         <a class="button" href="seite4.html">Button 4</a>
       </div>
+      <h1 id="heading">Button Color Change</h1>
+      <button id="myButton" class="button" onclick="changeColor()">Change Color</button>
+    </form>
     </div>
+
   </body>
 {% endblock %}
 </html>
