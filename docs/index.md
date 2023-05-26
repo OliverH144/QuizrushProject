@@ -42,7 +42,6 @@ CREATE TABLE category( <br>
 ## API Reference
 
 
-
 ## Design Decisions
 
 The core visual design decisions will most likely be how we display the questions and answers and how we will display the buttons that let the user navigate our application.
