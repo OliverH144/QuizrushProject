@@ -24,7 +24,7 @@ The planned Data Model so far consists of multiple tables of which the one for q
 
 The commands to create these tables are planned like this:
 
-CREATE TABLE question( <br>
+CREATE TABLE questions( <br>
 	question_id INTEGER PRIMARY KEY AUTOINCREMENT <br>
 	question VARCHAR(140) <br>
 	answer1 VARCHAR(20) <br>
@@ -37,11 +37,17 @@ CREATE TABLE category( <br>
 	category_id INTEGER PRIMARY KEY AUTOINCREMENT <br>
 	category_name VARCHAR(30) <br>
 	question_id INTEGER <br>
-	CONSTRAINT FK_question_id FOREIGN KEY(question_id) <br> REFERENCES question(question_id);
+	CONSTRAINT FK_question_id FOREIGN KEY(question_id) <br> REFERENCES questions(question_id);
 
 ## API Reference
 
+
+
 ## Design Decisions
+
+The core visual design decisions will most likely be how we display the questions and answers and how we will display the buttons that let the user navigate our application.
+
+An important design decision we made is to achieve displaying the new questions and answers without having the user load a new a page  and instead changing the content of the current page with appropriate methods.
 
 ## User Evaluation
 
