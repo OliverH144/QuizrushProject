@@ -1,5 +1,5 @@
 ---
-title: Home
+title: Quizrush
 nav_order: 0
 ---
 # Quizrush
@@ -25,19 +25,20 @@ The planned Data Model so far consists of multiple tables of which the one for q
 The commands to create these tables are planned like this:
 
 CREATE TABLE questions( <br>
-	question_id INTEGER PRIMARY KEY AUTOINCREMENT <br>
-	question VARCHAR(140) <br>
-	answer1 VARCHAR(20) <br>
-	answer2 VARCHAR(20) <br>
-	answer3 VARCHAR(20) <br>
-	answer4 VARCHAR(20)
+	question_id INTEGER PRIMARY KEY AUTOINCREMENT, <br>
+	question VARCHAR(140), <br>
+	answer1 VARCHAR(20), <br>
+	answer2 VARCHAR(20), <br>
+	answer3 VARCHAR(20), <br>
+	answer4 VARCHAR(20),
 );
 
 CREATE TABLE category( <br>
-	category_id INTEGER PRIMARY KEY AUTOINCREMENT <br>
-	category_name VARCHAR(30) <br>
-	question_id INTEGER <br>
-	CONSTRAINT FK_question_id FOREIGN KEY(question_id) <br> REFERENCES questions(question_id);
+	category_id INTEGER PRIMARY KEY AUTOINCREMENT, <br>
+	category_name VARCHAR(30), <br>
+	question_id INTEGER, <br>
+	CONSTRAINT FK_question_id FOREIGN KEY(question_id) <br> REFERENCES questions(question_id)
+);
 
 ## API Reference
 
