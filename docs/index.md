@@ -30,7 +30,7 @@ CREATE TABLE questions( <br>
 	answer1 VARCHAR(20), <br>
 	answer2 VARCHAR(20), <br>
 	answer3 VARCHAR(20), <br>
-	answer4 VARCHAR(20),
+	answer4 VARCHAR(20)
 );
 
 CREATE TABLE category( <br>
