@@ -24,6 +24,10 @@ def get_quiz():
 def get_quiz2():
     return render_template('quiz2.html')
 
+@app.route('/quiz3/')
+def get_quiz3():
+    return render_template('quiz3.html')
+
 #@app.route('/answer/', methods=['GET'])  # Notice the 'methods' argument
 #def answer():
 #    if request.method == 'GET':
