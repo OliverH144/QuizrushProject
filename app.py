@@ -1,16 +1,16 @@
 import os
 from flask import Flask, render_template, redirect, url_for, request
-#import db
+import db
 
 app = Flask(__name__)
 
 app.config.from_mapping(
 	SECRET_KEY='secret_key_just_for_dev_environment',
-	DATABASE=os.path.join(app.instance_path, 'todos.sqlite')
+	DATABASE=os.path.join(app.instance_path, 'quizrush.sqlite')
 )
 
-#app.cli.add_command(db.init_db)
-#app.teardown_appcontext(db.close_db_con)
+app.cli.add_command(db.init_db)
+app.teardown_appcontext(db.close_db_con)
 
 @app.route('/')
 def index():
@@ -33,3 +33,12 @@ def get_quiz3():
 #    if request.method == 'GET':
 #        pass  # Code to query database for all to-dos not yet implemented
 #        #return render_template('todos.html')  # We assume this template exists
+
+#adding data to database
+@app.route('/insert/data')
+def run_insert_data():
+    db.insert_data()
+    return 'Database flushed and populated with some sample data.'
+
+
+# [...]
