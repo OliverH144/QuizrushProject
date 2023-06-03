@@ -25,6 +25,10 @@ def get_quiz():
 def get_quiz2():
     return render_template('quiz2.html')
 
+@app.route('/quiz3/')
+def get_quiz3():
+    return render_template('quiz3.html')
+
 #testing some db interaction
 @app.route('/db/')
 def get_questions():
