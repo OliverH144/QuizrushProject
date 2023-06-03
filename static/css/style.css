@@ -74,6 +74,25 @@
             margin-bottom: 10px;
         }
 
+        .answer-button {
+            background-color: #f2f2f2;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px 20px;
+            margin: 5px;
+            cursor: pointer;
+          }
+
+          .answer-button.correct {
+            background-color: green;
+            color: white;
+          }
+          
+          .answer-button.incorrect {
+            background-color: red;
+            color: white;
+          }
+
         .settings {
             position: fixed;
             top: 50%;

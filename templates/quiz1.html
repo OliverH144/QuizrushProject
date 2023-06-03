@@ -2,42 +2,97 @@
 <html>
     
 {% extends 'base.html' %}
+<style>
+  .correct {
+      background-color: green;
+  }
+  .incorrect {
+      background-color: red;
+  }
+</style>
 {% block HEADER %}
 <h6></h6>
 <script>
-  function changeColor() {
-      var button = document.getElementById('richtigButton');
-      var currentColor = button.style.backgroundColor;
-      
-      if (currentColor === 'white') {
-          button.style.backgroundColor = 'red';
-          button.style.color = 'white';
-          button.innerHTML = 'Weiß';
-          document.getElementById('heading').innerHTML = 'Weiß';
-      } else {
-          button.style.backgroundColor = 'white';
-          button.style.color = 'black';
-          button.innerHTML = 'Rot';
-          document.getElementById('heading').innerHTML = 'Rot';
+  function answerSelected(button) {
+    var buttons = document.getElementsByClassName("answer-button");
+    for (var i = 0; i < buttons.length; i++) {
+      buttons[i].disabled = true;  // Deaktivieren aller Buttons
+    }
+    
+    // Überprüfen, ob die ausgewählte Antwort korrekt ist
+    var selectedAnswer = button.innerHTML;
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+      if (this.readyState == 4 && this.status == 200) {
+        var response = JSON.parse(this.responseText);
+        var isCorrect = response.isCorrect;
+        
+        // Färben des Buttons entsprechend der Antwort
+        if (isCorrect) {
+          button.classList.add('correct');
+        } else {
+          button.classList.add('incorrect');
+        }
       }
+    };
+    xhttp.open("POST", "/check_answer", true);
+    xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    xhttp.send("answer=" + encodeURIComponent(selectedAnswer));
   }
+  
+  function nextQuestion() {
+    // Zurücksetzen der Buttons und Hintergrundfarben
+    var buttons = document.getElementsByClassName("answer-button");
+    for (var i = 0; i < buttons.length; i++) {
+      buttons[i].disabled = false;  // Buttons aktivieren
+      buttons[i].classList.remove('correct', 'incorrect');  // Zurücksetzen der Hintergrundfarben
+    }
+    
+    // Ajax-Anfrage an den Server, um die nächste Frage abzurufen
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+      if (this.readyState == 4 && this.status == 200) {
+        var response = JSON.parse(this.responseText);
+        var question = response.question;
+        var answers = response.answers;
+        
+        // Aktualisieren der Frage und Antworten auf der Seite
+        document.getElementById("question").innerHTML = question;
+        
+        var answerButtons = document.getElementsByClassName("answer-button");
+        for (var i = 0; i < answerButtons.length; i++) {
+          answerButtons[i].innerHTML = answers[i];
+        }
+      }
+    };
+    xhttp.open("GET", "/next_question", true);
+    xhttp.send();
+  }
+  
+  // Initialisierung der ersten Frage beim Laden der Seite
+  window.onload = function() {
+    nextQuestion();
+  };
 </script>
+
 {% endblock %}
 {% block CONTENT %}
 
 <body>
   <div class="container">
-    <p id="heading">Button Color Change</p>
-    <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-bottom: 20px; margin: 20px;">
-      <div style="width: 100%; display: flex; justify-content: center;">
-        <button id="myButton" class="button" onclick="changeColor()">Change Color</button>
-        <button id="myButton" class="button" onclick="changeColor()">Change Color</button>
-      </div>
-      <div style="width: 100%; display: flex; justify-content: center;">
-        <button id="myButton" class="button button-antworten" onclick="changeColor()">Change Color</button>
-        <button id="myButton" class="button button-antworten" onclick="changeColor()">Change Color</button>
-      </div>
+    <p id="question"></p>
+    <h2>Answers:</h2>
+    <div class="button-container">
+      <form>
+        <button type="button" class="answer-button" onclick="answerSelected(this)"></button>
+        <button type="button" class="answer-button" onclick="answerSelected(this)"></button>
+        <button type="button" class="answer-button" onclick="answerSelected(this)"></button>
+        <button type="button" class="answer-button" onclick="answerSelected(this)"></button>
+      </form>
     </div>
+  </div>
+
+  <button type="button" id="nextButton" onclick="nextQuestion()">Nächste Frage</button>
 </body>
 {% endblock %}
 </html>
