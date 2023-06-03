@@ -4,21 +4,40 @@
 {% extends 'base.html' %}
 {% block HEADER %}
 <h6></h6>
+<script>
+  function changeColor() {
+      var button = document.getElementById('richtigButton');
+      var currentColor = button.style.backgroundColor;
+      
+      if (currentColor === 'white') {
+          button.style.backgroundColor = 'red';
+          button.style.color = 'white';
+          button.innerHTML = 'Weiß';
+          document.getElementById('heading').innerHTML = 'Weiß';
+      } else {
+          button.style.backgroundColor = 'white';
+          button.style.color = 'black';
+          button.innerHTML = 'Rot';
+          document.getElementById('heading').innerHTML = 'Rot';
+      }
+  }
+</script>
 {% endblock %}
 {% block CONTENT %}
 
 <body>
-    <div class="container">
-      <div>
-        <a class="button" href="quiz1.html">Button 1</a>
-        <a class="button" href="quiz2.html">Button 2</a>
-        <a class="button" href="seite3.html">Button 3</a>
-        <a class="button" href="seite4.html">Button 4</a>
-        <form action="/change_color" method="post">
-          <button class="button" type="submit">Change Color</button>
-      </form>
+  <div class="container">
+    <p id="heading">Button Color Change</p>
+    <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-bottom: 20px; margin: 20px;">
+      <div style="width: 100%; display: flex; justify-content: center;">
+        <button id="myButton" class="button" onclick="changeColor()">Change Color</button>
+        <button id="myButton" class="button" onclick="changeColor()">Change Color</button>
+      </div>
+      <div style="width: 100%; display: flex; justify-content: center;">
+        <button id="myButton" class="button button-antworten" onclick="changeColor()">Change Color</button>
+        <button id="myButton" class="button button-antworten" onclick="changeColor()">Change Color</button>
       </div>
     </div>
-  </body>
+</body>
 {% endblock %}
 </html>

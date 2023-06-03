@@ -2,9 +2,6 @@
 <html>  
 {% extends 'base.html' %}
 {% block HEADER %}
-<style>
-  
-  </style>
   <script>
     function changeColor() {
         var button = document.getElementById('myButton');
@@ -23,23 +20,26 @@
         }
     }
 </script>
-	<h2>{% block TITLE %}Home{% endblock %}</h2>
+
 {% endblock %}
 {% block CONTENT %}
 
 <body>
-    <div class="container">
-      <div style="text-align: center;">
-        <a href="{{ url_for('get_quiz') }}"><button class="button">Quiz Rush</button></a>
+    <div>
+      <div style="display: flex; flex-direction: column; align-items: center; margin-top: 20px; margin-bottom: 20px;">
+        <a href="{{ url_for('get_quiz') }}" style="text-decoration: none;"><button class="button">Quiz Rush</button></a>
       </div>
-      <h2>Quiz Rush</h2>
-      <div style="display: flex; justify-content: center; flex-wrap: wrap;">
-        <a href="{{ url_for('get_quiz') }}"><button class="button">Mathe Allgemeinwissen</button></a>
-        <a href="{{ url_for('get_quiz2') }}"><button class="button">Politik Allgemein Wissen</button></a>
-        <a href="{{ url_for('get_quiz3') }}"><button class="button">Geschichte Allgemeinwissen</button></a>
-        <a href="{{ url_for('get_quiz3') }}"><button class="button">Spiel Wissen</button></a>
-        <a href="{{ url_for('get_quiz') }}"><button class="button">Geografie Allgemeinwissen</button></a>
-        <a href="{{ url_for('get_quiz2') }}"><button class="button">Quiz starten 2</button></a>
+      <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-bottom: 20px; margin: 20px;">
+        <div style="width: 100%; display: flex; justify-content: center;">
+          <a href="{{ url_for('get_quiz') }}" style="text-decoration: none;"><button class="button">Mathe Allgemeinwissen</button></a>
+          <a href="{{ url_for('get_quiz2') }}" style="text-decoration: none;"><button class="button">Politik Allgemein Wissen</button></a>
+          <a href="{{ url_for('get_quiz3') }}" style="text-decoration: none;"><button class="button">Geschichte Allgemeinwissen</button></a>
+        </div>
+        <div style="width: 100%; display: flex; justify-content: center;">
+          <a href="{{ url_for('get_quiz3') }}" style="text-decoration: none;"><button class="button">Spiel Wissen</button></a>
+          <a href="{{ url_for('get_quiz') }}" style="text-decoration: none;"><button class="button">Geografie Allgemeinwissen</button></a>
+          <a href="{{ url_for('get_quiz2') }}" style="text-decoration: none;"><button class="button">Quiz starten 2</button></a>
+        </div>
       </div>
       <h2 id="heading">Button Color Change</h2>
       <button id="myButton" class="button" onclick="changeColor()">Change Color</button>

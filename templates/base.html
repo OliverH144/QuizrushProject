@@ -1,71 +1,7 @@
 <!doctype html>
 <head>
     <title>{% block TITLE %}{% endblock %} - Quizrush</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
-        }
-        
-        .container {
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #fff;
-            border-radius: 10px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        }
-        
-        .button {
-            display: inline-block;
-            padding: 10px 20px;
-            margin-right: 10px;
-            background-color: #fff;
-            color: #000;
-            border: 2px solid #ccc;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        
-        .button:hover {
-            background-color: #ccc;
-            color: #fff;
-        }
-
-		.nav {
-            overflow: hidden;
-            background-color: lightgray;
-            padding: 10px;
-        }
-        
-        h1 {
-            text-align: center;
-            background-color: lightgray;
-            padding: 10px;
-            font-size: 60px;
-        }
-
-		p {
-            text-align: center;
-            background-color: rgb(255, 251, 251);
-            padding: 100px;
-            font-size: 20px;
-        }
-
-		.nav .button {
-            float: right;
-            background-color: white;
-            color: gray;
-            border: 1px solid gray;
-        }
-
-		.button-container {
-  			display: flex;
-  			justify-content: center;
-  			align-items: center;
-  			flex-wrap: wrap;
-}
-    </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
     <nav class="nav">
@@ -73,11 +9,32 @@
 			<a href="{{ url_for('index') }}"><button class="button">Zurück</button></a>
 		</div>
         <div style="float: right;">
-			<a href="{{ url_for('index') }}"><button class="button">Einstellung</button></a>
-        </div>
+			
+                <button class="button" onclick="toggleSettings()">
+                  <img src="{{ url_for('static', filename='einstellung.jpg') }}" style="width: 80px; height: 50px;"> Einstellung
+                </button>
+        </div>    
         <h1>Quizrush</h1>
     </nav>
 
+    <!-- <button onclick="toggleSettings()">Einstellungen</button> -->
+
+    <div id="settingsPanel" class="settings" style="display: none;">
+        <button onclick="toggleDarkMode()">Dark Mode</button>
+    </div>
+
+    <script>
+        function toggleSettings() {
+          var settingsPanel = document.getElementById('settingsPanel');
+          settingsPanel.style.display = (settingsPanel.style.display === 'none') ? 'block' : 'none';
+        }
+    
+        function toggleDarkMode() {
+          var body = document.body;
+          body.classList.toggle('dark-mode');
+        }
+      </script>
+    
     <section class="content">
         <header>{% block HEADER %}{% endblock %}</header>
         {% block CONTENT %}{% endblock %}
