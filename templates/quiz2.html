@@ -3,15 +3,14 @@
   
 {% extends 'base.html' %}
 {% block HEADER %}
-	<h2>{% block TITLE %}Quiz{% endblock %}</h2>
+	<h2>{% block TITLE %}quiz1{% endblock %}</h2>
 {% endblock %}
 {% block CONTENT %}
 
-<l1>"*Frage*"</l1>
 <body>
   <div class="container">
     <h1>Quiz</h1>
-    <img src="{{ url_for('static', filename='example.jpg') }}" alt="Bild">
+    <img src="{{ url_for('static', filename='example.jpg') }}" alt="Bild" style="width: 600px; height: 600px;">
     
     <p>Frage: Was ist die Hauptstadt von Deutschland?</p>
     <div>

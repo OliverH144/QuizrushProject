@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Meine Webseite</title>
+  <style>
+    .settings {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      padding: 20px;
+      background-color: #fff;
+      border: 1px solid #ccc;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+      z-index: 9999;
+    }
+    .settings button {
+      display: block;
+      margin: 10px auto;
+      padding: 10px 20px;
+      background-color: #ccc;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    body.dark-mode {
+      background-color: #222;
+      color: #fff;
+    }
+  </style>
+</head>
+<body>
+  <button onclick="toggleSettings()">Einstellungen</button>
+
+  <div id="settingsPanel" class="settings" style="display: none;">
+    <button onclick="toggleDarkMode()">Dark Mode</button>
+  </div>
+
+  <script>
+    function toggleSettings() {
+      var settingsPanel = document.getElementById('settingsPanel');
+      settingsPanel.style.display = (settingsPanel.style.display === 'none') ? 'block' : 'none';
+    }
+
+    function toggleDarkMode() {
+      var body = document.body;
+      body.classList.toggle('dark-mode');
+    }
+  </script>
+</body>
+</html>
