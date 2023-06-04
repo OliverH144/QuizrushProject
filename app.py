@@ -52,9 +52,19 @@ def get_questions():
         question = question_query[0]
         r_questions.append(question)
         j=j+1
-    #vlt random.shuffle(list) nutzen
-    return f'Count:{count} Random Numbers:{random_numbers} Random Questions:{r_questions}'
-
+        
+    sql_query2 = 'SELECT answer1, answer2, answer3, answer4 FROM questions WHERE question_id = 2'
+    result = db_con.execute(sql_query2).fetchone()
+    solution=result[0]
+    answers = []
+    x=0
+    while x<4:   
+        answers.append(result[x])
+        x+=1
+    random.shuffle(answers)
+    return f'S:{solution} A:{answers}'
+    #return f'Count:{count} Random Numbers:{random_numbers} Random Questions:{r_questions} Solution: {solution} Answers:{answers}'
+    
 
 #@app.route('/answer/', methods=['GET'])  # Notice the 'methods' argument
 #def answer():
