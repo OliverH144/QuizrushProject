@@ -118,5 +118,12 @@
             background-color: #222;
             color: #fff;
           }
+          .correct {
+            background-color: green;
+          }
+          
+          .incorrect {
+            background-color: red;
+          }
 
         

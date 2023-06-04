@@ -1,15 +1,7 @@
 <!DOCTYPE html>
 <html>
-    
 {% extends 'base.html' %}
-<style>
-  .correct {
-      background-color: green;
-  }
-  .incorrect {
-      background-color: red;
-  }
-</style>
+
 {% block HEADER %}
 <h6></h6>
 <script>
@@ -21,26 +13,23 @@
     
     // Überprüfen, ob die ausgewählte Antwort korrekt ist
     var selectedAnswer = button.innerHTML;
-    var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function() {
-      if (this.readyState == 4 && this.status == 200) {
-        var response = JSON.parse(this.responseText);
-        var isCorrect = response.isCorrect;
-        
-        // Färben des Buttons entsprechend der Antwort
-        if (isCorrect) {
-          button.classList.add('correct');
-        } else {
-          button.classList.add('incorrect');
-        }
-      }
-    };
-    xhttp.open("POST", "/check_answer", true);
-    xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-    xhttp.send("answer=" + encodeURIComponent(selectedAnswer));
+    var isCorrect = button.classList.contains('correct');
+    
+    // Färben des Buttons entsprechend der Antwort
+    if (isCorrect) {
+      button.classList.add('correct');
+    } else {
+      button.classList.add('incorrect');
+    }
+    
+    var nextButton = document.getElementById("nextButton");
+    nextButton.disabled = false;
   }
   
   function nextQuestion() {
+    var nextButton = document.getElementById("nextButton");
+    nextButton.disabled = true;
+    
     // Zurücksetzen der Buttons und Hintergrundfarben
     var buttons = document.getElementsByClassName("answer-button");
     for (var i = 0; i < buttons.length; i++) {
@@ -62,6 +51,7 @@
         var answerButtons = document.getElementsByClassName("answer-button");
         for (var i = 0; i < answerButtons.length; i++) {
           answerButtons[i].innerHTML = answers[i];
+          answerButtons[i].classList.remove('correct', 'incorrect');  // Zurücksetzen der Hintergrundfarben
         }
       }
     };
@@ -74,10 +64,8 @@
     nextQuestion();
   };
 </script>
-
 {% endblock %}
 {% block CONTENT %}
-
 <body>
   <div class="container">
     <p id="question"></p>
@@ -89,10 +77,11 @@
         <button type="button" class="answer-button" onclick="answerSelected(this)"></button>
         <button type="button" class="answer-button" onclick="answerSelected(this)"></button>
       </form>
-    </div>
-  </div>
-
-  <button type="button" id="nextButton" onclick="nextQuestion()">Nächste Frage</button>
+      <nav class="nav">
+        </div>
+          <button type="button" id="nextButton" onclick="nextQuestion()" disabled class="button">Nächste Frage</button>
+      </nav>
+  </div>  
 </body>
 {% endblock %}
 </html>
