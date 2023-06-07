@@ -1,6 +1,7 @@
 BEGIN TRANSACTION;
 DELETE from questions;
 DELETE from category;
+DROP TABLE richtige_antwort;
 DELETE from sqlite_sequence;
 INSERT INTO questions (question, answer1, answer2, answer3, answer4) VALUES ("The fastest land animal is?", "Cheetah", "Dachshund", "Greyhound", "Rabbit");
 INSERT INTO questions (question, answer1, answer2, answer3, answer4) VALUES ("Tomatoes are ...", "Fruits", "Nuts", "Vegetables", "Roots");

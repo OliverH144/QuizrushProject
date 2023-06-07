@@ -16,14 +16,35 @@
     var isCorrect = button.classList.contains('correct');
     
     // Färben des Buttons entsprechend der Antwort
-    if (isCorrect) {
-      button.classList.add('correct');
-    } else {
-      button.classList.add('incorrect');
-    }
+    // if (isCorrect) {
+    //   button.classList.add('correct');
+    // } else {
+    //   button.classList.add('incorrect');
+    // }
     
     var nextButton = document.getElementById("nextButton");
     nextButton.disabled = false;
+    
+    // Ajax-Anfrage an den Server, um die Antwort zu überprüfen
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+      if (this.readyState == 4 && this.status == 200) {
+        var response = JSON.parse(this.responseText);
+        var isAnswerCorrect = response.isCorrect;
+        
+        // Färben des Buttons entsprechend der Überprüfung
+        if (isAnswerCorrect == true) {
+          button.classList.add('correct');
+          // print("richtig")
+        } 
+        else {
+          button.classList.add('incorrect');
+        }
+      }
+    };
+    xhttp.open("POST", "/check_answer", true);
+    xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xhttp.send("answer=" + selectedAnswer);
   }
   
   function nextQuestion() {
@@ -70,6 +91,7 @@
   <div class="container">
     <p id="question"></p>
     <h2>Answers:</h2>
+    <p id="score"></p>
     <div class="button-container">
       <form>
         <button type="button" class="answer-button" onclick="answerSelected(this)"></button>
