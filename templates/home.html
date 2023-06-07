@@ -42,8 +42,14 @@
         </div>
       </div>
       <h2 id="heading">Button Color Change</h2>
+      <p> {{question}}</p>
+      <h2>Answers:</h2>
+    <form method="POST" action="/submit_answer">
+        {% for answer in answers %}
+            <button type="submit" name="selected_answer" value="{{ answer }}">{{ answer }}</button>
+        {% endfor %}
+      </form>
       <button id="myButton" class="button" onclick="changeColor()">Change Color</button>
-    </form>
     </div>
 
   </body>

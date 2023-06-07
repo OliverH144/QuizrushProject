@@ -2,6 +2,7 @@ import os
 from flask import Flask, render_template, redirect, url_for, request
 import db
 import random
+from flask import jsonify
 
 app = Flask(__name__)
 
@@ -13,13 +14,37 @@ app.config.from_mapping(
 app.cli.add_command(db.init_db)
 app.teardown_appcontext(db.close_db_con)
 
+
+
 @app.route('/')
 def index():
     return render_template('home.html')
 
 @app.route('/quiz1/')
 def get_quiz():
-    return render_template('quiz1.html')
+    db_con = db.get_db_con()
+    sql_query = 'SELECT COUNT(question) from questions'
+    question_count = db_con.execute(sql_query).fetchone()
+    count=question_count[0]
+    global random_numbers
+    random_numbers=[] 
+    global q_count 
+    q_count = 0  
+    i=0
+    while i <10:
+        number = random.randint(1, count)
+        if number not in random_numbers:
+            random_numbers.append(number)
+            i=i+1
+        else: continue
+    sql_query = f'SELECT question, answer1, answer2, answer3, answer4 FROM questions WHERE question_id = {random_numbers[0]}'
+    result = db_con.execute(sql_query).fetchone()
+    question = result[0]
+    answers = list(result[1:])
+    random.shuffle(answers)
+    correct_answer = result[1]  # Annahme: Die erste Antwort (answer1) ist die richtige Antwort
+    return render_template('quiz1.html', question=question, answers=answers, correct_answer=correct_answer) 
+
 
 @app.route('/quiz2/')
 def get_quiz2():
@@ -66,12 +91,6 @@ def get_questions():
     #return f'Count:{count} Random Numbers:{random_numbers} Random Questions:{r_questions} Solution: {solution} Answers:{answers}'
     
 
-#@app.route('/answer/', methods=['GET'])  # Notice the 'methods' argument
-#def answer():
-#    if request.method == 'GET':
-#        pass  # Code to query database for all to-dos not yet implemented
-#        #return render_template('todos.html')  # We assume this template exists
-
 #adding data to database
 @app.route('/insert/data')
 def run_insert_data():
@@ -79,4 +98,26 @@ def run_insert_data():
     return 'Database flushed and populated with some sample data.'
 
 
-# [...]
+@app.route('/check_answer', methods=['POST'])
+def check_answer():
+    selected_answer = request.form['answer']
+    db_con = db.get_db_con()
+    sql_query = f'SELECT answer1 FROM questions WHERE question_id = {random_numbers[q_count]}'
+    correct_answer = db_con.execute(sql_query).fetchone()[0]
+    is_correct = selected_answer == correct_answer
+    return jsonify({'isCorrect': is_correct})
+    
+@app.route('/next_question')
+def next_question():
+    global q_count
+    q_count=q_count+1
+    if q_count>8:
+        return render_template('index')
+    db_con = db.get_db_con()
+    #sql_query = 'SELECT question, answer1, answer2, answer3, answer4 FROM questions ORDER BY RANDOM() LIMIT 1'
+    sql_query = f'SELECT question, answer1, answer2, answer3, answer4 FROM questions WHERE question_id = {random_numbers[q_count]}'
+    result = db_con.execute(sql_query).fetchone()
+    question = result[0]
+    answers = list(result[1:])
+    random.shuffle(answers)
+    return jsonify({'question': question, 'answers': answers})
