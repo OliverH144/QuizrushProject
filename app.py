@@ -29,9 +29,17 @@ def get_quiz():
     global random_numbers
     random_numbers=[] 
     global q_count 
+<<<<<<< HEAD
     q_count = 0  
     i=0
     while i <11:
+=======
+    q_count = 0
+    global score
+    score = 0  
+    i=0
+    while i <10:
+>>>>>>> b5301cdf8e9eeca154f6ae0d8fb04f2c310f357a
         number = random.randint(1, count)
         if number not in random_numbers:
             random_numbers.append(number)
@@ -43,7 +51,11 @@ def get_quiz():
     answers = list(result[1:])
     random.shuffle(answers)
     correct_answer = result[1]  # Annahme: Die erste Antwort (answer1) ist die richtige Antwort
+<<<<<<< HEAD
     return render_template('quiz1.html', question=question, answers=answers, correct_answer=correct_answer) 
+=======
+    return render_template('quiz1.html', question=question, answers=answers, correct_answer=correct_answer, score = score) 
+>>>>>>> b5301cdf8e9eeca154f6ae0d8fb04f2c310f357a
 
 
 @app.route('/quiz2/')
@@ -105,14 +117,23 @@ def check_answer():
     sql_query = f'SELECT answer1 FROM questions WHERE question_id = {random_numbers[q_count]}'
     correct_answer = db_con.execute(sql_query).fetchone()[0]
     is_correct = selected_answer == correct_answer
+<<<<<<< HEAD
+=======
+    if(is_correct):
+        score = score + 1
+>>>>>>> b5301cdf8e9eeca154f6ae0d8fb04f2c310f357a
     return jsonify({'isCorrect': is_correct})
     
 @app.route('/next_question')
 def next_question():
     global q_count
     q_count=q_count+1
+<<<<<<< HEAD
     if q_count>8:
         #send to homescreen
+=======
+    if q_count > 8:
+>>>>>>> b5301cdf8e9eeca154f6ae0d8fb04f2c310f357a
         return render_template('home.html')
     db_con = db.get_db_con()
     #sql_query = 'SELECT question, answer1, answer2, answer3, answer4 FROM questions ORDER BY RANDOM() LIMIT 1'
