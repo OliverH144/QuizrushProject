@@ -67,7 +67,7 @@ def get_questions():
     i=0
     random_numbers=[]
     r_questions=[]
-    while i <10:
+    while i <11:
         number = random.randint(1, count)
         if number not in random_numbers:
             random_numbers.append(number)
@@ -116,14 +116,16 @@ def check_answer():
 @app.route('/next_question')
 def next_question():
     global q_count
-    q_count=q_count+1
-    if q_count > 8:
-        return render_template('home.html')
+    q_count = q_count + 1
+    # if q_count > 8:
+    #     return redirect(url_for('index'))  # Zurück zur home.html-Seite
     db_con = db.get_db_con()
-    #sql_query = 'SELECT question, answer1, answer2, answer3, answer4 FROM questions ORDER BY RANDOM() LIMIT 1'
     sql_query = f'SELECT question, answer1, answer2, answer3, answer4 FROM questions WHERE question_id = {random_numbers[q_count]}'
     result = db_con.execute(sql_query).fetchone()
     question = result[0]
     answers = list(result[1:])
     random.shuffle(answers)
-    return jsonify({'question': question, 'answers': answers})
+    is_quiz_finished = False
+    if q_count >= 8:  # Wenn die letzte Frage erreicht ist
+        is_quiz_finished = True
+    return jsonify({'question': question, 'answers': answers, 'isQuizFinished': is_quiz_finished})
