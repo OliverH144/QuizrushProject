@@ -31,7 +31,7 @@ def get_quiz():
     global q_count 
     q_count = 0  
     i=0
-    while i <10:
+    while i <11:
         number = random.randint(1, count)
         if number not in random_numbers:
             random_numbers.append(number)
@@ -112,7 +112,8 @@ def next_question():
     global q_count
     q_count=q_count+1
     if q_count>8:
-        return render_template('index')
+        #send to homescreen
+        return render_template('home.html')
     db_con = db.get_db_con()
     #sql_query = 'SELECT question, answer1, answer2, answer3, answer4 FROM questions ORDER BY RANDOM() LIMIT 1'
     sql_query = f'SELECT question, answer1, answer2, answer3, answer4 FROM questions WHERE question_id = {random_numbers[q_count]}'
