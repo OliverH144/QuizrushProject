@@ -25,27 +25,28 @@ def get_quiz():
     db_con = db.get_db_con()
     sql_query = 'SELECT COUNT(question) from questions'
     question_count = db_con.execute(sql_query).fetchone()
-    count=question_count[0]
+    count = question_count[0]
     global random_numbers
-    random_numbers=[] 
-    global q_count 
+    random_numbers = []
+    global q_count
     q_count = 0
     global score
-    score = 0  
-    i=0
-    while i <10:
+    score = 0
+    i = 0
+    while i < 10:
         number = random.randint(1, count)
         if number not in random_numbers:
             random_numbers.append(number)
-            i=i+1
-        else: continue
+            i = i + 1
+        else:
+            continue
     sql_query = f'SELECT question, answer1, answer2, answer3, answer4 FROM questions WHERE question_id = {random_numbers[0]}'
     result = db_con.execute(sql_query).fetchone()
     question = result[0]
     answers = list(result[1:])
     random.shuffle(answers)
     correct_answer = result[1]  # Annahme: Die erste Antwort (answer1) ist die richtige Antwort
-    return render_template('quiz1.html', question=question, answers=answers, correct_answer=correct_answer, score = score) 
+    return render_template('quiz1.html', question=question, answers=answers, correct_answer=correct_answer, score=score)
 
 
 @app.route('/quiz2/')
@@ -102,14 +103,15 @@ def run_insert_data():
 
 @app.route('/check_answer', methods=['POST'])
 def check_answer():
+    global score
     selected_answer = request.form['answer']
     db_con = db.get_db_con()
     sql_query = f'SELECT answer1 FROM questions WHERE question_id = {random_numbers[q_count]}'
     correct_answer = db_con.execute(sql_query).fetchone()[0]
     is_correct = selected_answer == correct_answer
-    if(is_correct):
-        score = score + 1
-    return jsonify({'isCorrect': is_correct})
+    if is_correct:
+        score += 1  # Erhöhen Sie den Score um eins, wenn die Antwort korrekt ist
+    return jsonify({'isCorrect': is_correct, 'score': score})
     
 @app.route('/next_question')
 def next_question():
