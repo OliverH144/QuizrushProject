@@ -51,12 +51,59 @@ def get_quiz():
 
 @app.route('/quiz2/')
 def get_quiz2():
-    return render_template('quiz2.html')
+    db_con = db.get_db_con()
+    sql_query = 'SELECT COUNT(question) from questions'
+    question_count = db_con.execute(sql_query).fetchone()
+    count = question_count[0]
+    global random_numbers
+    random_numbers = []
+    global q_count
+    q_count = 0
+    global score
+    score = 0
+    i = 0
+    while i < 10:
+        number = random.randint(1, count)
+        if number not in random_numbers:
+            random_numbers.append(number)
+            i = i + 1
+        else:
+            continue
+    sql_query = f'SELECT question, answer1, answer2, answer3, answer4 FROM questions WHERE question_id = {random_numbers[0]}'
+    result = db_con.execute(sql_query).fetchone()
+    question = result[0]
+    answers = list(result[1:])
+    random.shuffle(answers)
+    correct_answer = result[1]  # Annahme: Die erste Antwort (answer1) ist die richtige Antwort
+    return render_template('quiz2.html', question=question, answers=answers, correct_answer=correct_answer, score=score)
 
 @app.route('/quiz3/')
 def get_quiz3():
-    return render_template('quiz3.html')
-
+    db_con = db.get_db_con()
+    sql_query = 'SELECT COUNT(question) from questions'
+    question_count = db_con.execute(sql_query).fetchone()
+    count = question_count[0]
+    global random_numbers
+    random_numbers = []
+    global q_count
+    q_count = 0
+    global score
+    score = 0
+    i = 0
+    while i < 10:
+        number = random.randint(1, count)
+        if number not in random_numbers:
+            random_numbers.append(number)
+            i = i + 1
+        else:
+            continue
+    sql_query = f'SELECT question, answer1, answer2, answer3, answer4 FROM questions WHERE question_id = {random_numbers[0]}'
+    result = db_con.execute(sql_query).fetchone()
+    question = result[0]
+    answers = list(result[1:])
+    random.shuffle(answers)
+    correct_answer = result[1]  # Annahme: Die erste Antwort (answer1) ist die richtige Antwort
+    return render_template('quiz3.html', question=question, answers=answers, correct_answer=correct_answer, score=score)
 #testing some db interaction
 @app.route('/db/')
 def get_questions():

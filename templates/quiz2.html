@@ -1,24 +1,176 @@
 <!DOCTYPE html>
 <html>
-  
 {% extends 'base.html' %}
+
 {% block HEADER %}
-	<h2>{% block TITLE %}quiz1{% endblock %}</h2>
+<h6></h6>
+<script>
+  var timer;  // Timer-Variable
+  var timeLimit = 10;  // Zeitlimit in Sekunden
+
+  function startTimer(timeLeft = timeLimit) {
+    var timerDisplay = document.getElementById("timer");
+    timerDisplay.innerHTML = timeLeft;
+
+    // Timer-Funktion, die alle 1 Sekunde aufgerufen wird
+    timer = setInterval(function() {
+      timeLeft--;
+      timerDisplay.innerHTML = timeLeft;
+
+      // Überprüfen, ob der Timer abgelaufen ist
+      if (timeLeft <= 0) {
+        clearInterval(timer);  // Timer stoppen
+        disableAnswerButtons();  // Antwortbuttons deaktivieren
+        document.getElementById("nextButton").disabled = false;  // "Nächste Frage"-Button aktivieren
+      }
+    }, 1000);
+  }
+
+  function stopTimer() {
+    clearInterval(timer);  // Timer stoppen
+    timer = null;  // Timer-Variable auf null setzen, um das Zurücksetzen zu verhindern
+  }
+
+  function answerSelected(button) {
+    stopTimer();  // Timer stoppen
+
+    var buttons = document.getElementsByClassName("answer-button");
+    for (var i = 0; i < buttons.length; i++) {
+      buttons[i].disabled = true;  // Deaktivieren aller Buttons
+    }
+    
+    // Überprüfen, ob die ausgewählte Antwort korrekt ist
+    var selectedAnswer = button.innerHTML;
+    var isCorrect = button.classList.contains('correct');
+    
+    var nextButton = document.getElementById("nextButton");
+    nextButton.disabled = false;
+    
+    // Ajax-Anfrage an den Server, um die Antwort zu überprüfen
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+      if (this.readyState == 4 && this.status == 200) {
+      var response = JSON.parse(this.responseText);
+      var isAnswerCorrect = response.isCorrect;
+      var score = response.score;
+
+      // Färben des Buttons entsprechend der Überprüfung
+      if (isAnswerCorrect == true) {
+        button.classList.add('correct');
+      } else {
+        button.classList.add('incorrect');
+      }
+      // Aktualisieren des Score-Werts auf der Seite
+      document.getElementById("score").innerHTML = score;
+
+      // Timer starten, um zur nächsten Frage zu wechseln
+      startTimerForNextQuestion();
+    }
+  };
+  xhttp.open("POST", "/check_answer", true);
+  xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  xhttp.send("answer=" + selectedAnswer);
+  }
+
+  function startTimerForNextQuestion() {
+  // Timer-Funktion, die alle 1 Sekunde aufgerufen wird
+  timer = setInterval(function() {
+    timeLeft--;
+    timerDisplay.innerHTML = timeLeft;
+
+    // Überprüfen, ob der Timer abgelaufen ist
+    if (timeLeft <= 0) {
+      clearInterval(timer);  // Timer stoppen
+      disableAnswerButtons();  // Antwortbuttons deaktivieren
+      nextQuestion();  // Nächste Frage abrufen
+    }
+  }, 1000);
+}
+  
+  function nextQuestion() {
+    var nextButton = document.getElementById("nextButton");
+    var resultButton = document.getElementById("resultButton");
+    nextButton.disabled = true;
+
+    // Zurücksetzen der Buttons und Hintergrundfarben
+    var buttons = document.getElementsByClassName("answer-button");
+    for (var i = 0; i < buttons.length; i++) {
+      buttons[i].disabled = false;  // Buttons aktivieren
+      buttons[i].classList.remove('correct', 'incorrect');  // Zurücksetzen der Hintergrundfarben
+    }
+
+    // Ajax-Anfrage an den Server, um die nächste Frage abzurufen
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      var response = JSON.parse(this.responseText);
+      var question = response.question;
+      var answers = response.answers;
+
+      // Aktualisieren der Frage und Antworten auf der Seite
+      document.getElementById("question").innerHTML = question;
+
+      var answerButtons = document.getElementsByClassName("answer-button");
+      for (var i = 0; i < answerButtons.length; i++) {
+        answerButtons[i].innerHTML = answers[i];
+        answerButtons[i].classList.remove('correct', 'incorrect');  // Zurücksetzen der Hintergrundfarben
+      }
+
+      // Überprüfen auf das Beenden des Quiz und Aktualisieren der Buttons
+      if (response.isQuizFinished) {
+        nextButton.style.display = "none";  // "Nächste Frage"-Button ausblenden
+        resultButton.style.display = "block";  // "Ergebnis"-Button anzeigen
+      }
+
+      // Timer für die nächste Frage starten
+      startTimer();
+    }
+  };
+  xhttp.open("GET", "/next_question", true);
+  xhttp.send();
+  }
+
+  function redirectToHome() {
+    window.location.href = "/";  // Weiterleitung zur home.html-Seite
+  }
+
+  function disableAnswerButtons() {
+    var buttons = document.getElementsByClassName("answer-button");
+    for (var i = 0; i < buttons.length; i++) {
+      buttons[i].disabled = true;
+    }
+  }
+
+  // Initialisierung der ersten Frage beim Laden der Seite
+  window.onload = function() {
+    nextQuestion();
+  };
+</script>
 {% endblock %}
 {% block CONTENT %}
-
 <body>
   <div class="container">
-    <h1>Quiz</h1>
-    <img src="{{ url_for('static', filename='example.jpg') }}" alt="Bild" style="width: 600px; height: 600px;">
-    
-    <p>Frage: Was ist die Hauptstadt von Deutschland?</p>
-    <div>
-      <a class="button" href="https://www.example.com">Berlin</a>
-      <a class="button" href="https://www.google.com">Berlin</a>
-      <a class="button" href="https://www.facebook.com">Berlin</a>
-      <a class="button" href="https://www.twitter.com">Berlin</a>
+    <div id="question-container">
+      <p id="question"></p>
+      <h2>Answers:</h2>
+
+      <div class="button-container">
+        <form>
+          <button type="button" class="answer-button" onclick="answerSelected(this)"></button>
+          <button type="button" class="answer-button" onclick="answerSelected(this)"></button>
+          <button type="button" class="answer-button" onclick="answerSelected(this)"></button>
+          <button type="button" class="answer-button" onclick="answerSelected(this)"></button>
+        </form>
+      </div>
     </div>
+    <nav class="nav">
+      <div id="nextButtonContainer">
+        <button type="button" id="nextButton" onclick="nextQuestion()" disabled class="button">Nächste Frage</button>
+        <button type="button" id="resultButton" onclick="redirectToHome()" class="button" style="display: none;">Ergebnis</button>
+      </div>
+      <p>Score: <span id="score">{{ score }}</span></p>
+      <p>Time Left: <span id="timer"></span></p>  <!-- Timer-Anzeige -->
+    </nav>
   </div>
 </body>
 {% endblock %}
