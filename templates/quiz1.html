@@ -151,7 +151,7 @@
 <body>
   <div class="container">
     <div id="question-container">
-      <p id="question"></p>
+      <p class="style1" id="question"></p>
       <h2>Answers:</h2>
 
       <div class="button-container">
@@ -163,13 +163,13 @@
         </form>
       </div>
     </div>
-    <nav class="nav">
-      <div id="nextButtonContainer">
+    <nav class="nav2">
+      <div id="nextButtonContainer" class="button-container">
         <button type="button" id="nextButton" onclick="nextQuestion()" disabled class="button">Nächste Frage</button>
         <button type="button" id="resultButton" onclick="redirectToHome()" class="button" style="display: none;">Ergebnis</button>
       </div>
-      <p>Score: <span id="score">{{ score }}</span></p>
-      <p>Time Left: <span id="timer"></span></p>  <!-- Timer-Anzeige -->
+      <p class="style2">Score: <span id="score">{{ score }}</span></p>
+      <p class="style2">Time Left: <span id="timer"></span></p>  <!-- Timer-Anzeige -->
     </nav>
   </div>
 </body>
