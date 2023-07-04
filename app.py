@@ -34,7 +34,7 @@ def get_quiz():
     db_con = db.get_db_con()
     sql_query = 'SELECT COUNT(question) from questions'
     question_count = db_con.execute(sql_query).fetchone()
-    count=question_count[0]
+    count = question_count[0]
     global random_numbers
     random_numbers=[]
     random_numbers=random10q(count) 
@@ -51,12 +51,59 @@ def get_quiz():
 
 @app.route('/quiz2/')
 def get_quiz2():
-    return render_template('quiz2.html')
+    db_con = db.get_db_con()
+    sql_query = 'SELECT COUNT(question) from questions'
+    question_count = db_con.execute(sql_query).fetchone()
+    count = question_count[0]
+    global random_numbers
+    random_numbers = []
+    global q_count
+    q_count = 0
+    global score
+    score = 0
+    i = 0
+    while i < 10:
+        number = random.randint(1, count)
+        if number not in random_numbers:
+            random_numbers.append(number)
+            i = i + 1
+        else:
+            continue
+    sql_query = f'SELECT question, answer1, answer2, answer3, answer4 FROM questions WHERE question_id = {random_numbers[0]}'
+    result = db_con.execute(sql_query).fetchone()
+    question = result[0]
+    answers = list(result[1:])
+    random.shuffle(answers)
+    correct_answer = result[1]  # Annahme: Die erste Antwort (answer1) ist die richtige Antwort
+    return render_template('quiz2.html', question=question, answers=answers, correct_answer=correct_answer, score=score)
 
 @app.route('/quiz3/')
 def get_quiz3():
-    return render_template('quiz3.html')
-
+    db_con = db.get_db_con()
+    sql_query = 'SELECT COUNT(question) from questions'
+    question_count = db_con.execute(sql_query).fetchone()
+    count = question_count[0]
+    global random_numbers
+    random_numbers = []
+    global q_count
+    q_count = 0
+    global score
+    score = 0
+    i = 0
+    while i < 10:
+        number = random.randint(1, count)
+        if number not in random_numbers:
+            random_numbers.append(number)
+            i = i + 1
+        else:
+            continue
+    sql_query = f'SELECT question, answer1, answer2, answer3, answer4 FROM questions WHERE question_id = {random_numbers[0]}'
+    result = db_con.execute(sql_query).fetchone()
+    question = result[0]
+    answers = list(result[1:])
+    random.shuffle(answers)
+    correct_answer = result[1]  # Annahme: Die erste Antwort (answer1) ist die richtige Antwort
+    return render_template('quiz3.html', question=question, answers=answers, correct_answer=correct_answer, score=score)
 #testing some db interaction
 @app.route('/db/')
 def get_questions():
@@ -67,7 +114,7 @@ def get_questions():
     i=0
     random_numbers=[]
     r_questions=[]
-    while i <10:
+    while i <11:
         number = random.randint(1, count)
         if number not in random_numbers:
             random_numbers.append(number)
@@ -155,26 +202,29 @@ def run_insert_data():
 
 @app.route('/check_answer', methods=['POST'])
 def check_answer():
+    global score
     selected_answer = request.form['answer']
     db_con = db.get_db_con()
     sql_query = f'SELECT answer1 FROM questions WHERE question_id = {random_numbers[q_count]}'
     correct_answer = db_con.execute(sql_query).fetchone()[0]
     is_correct = selected_answer == correct_answer
-    if(is_correct):
-        global score
-        score = score + 1
-    return jsonify({'isCorrect': is_correct, 'score':score})
+    if is_correct:
+        score += 1  # Erhöhen Sie den Score um eins, wenn die Antwort korrekt ist
+    return jsonify({'isCorrect': is_correct, 'score': score})
     
 @app.route('/next_question')
 def next_question():
     global q_count
-    q_count=q_count+1
-    if q_count > 8:
-        return render_template('home.html')
+    q_count = q_count + 1
+    # if q_count > 8:
+    #     return redirect(url_for('index'))  # Zurück zur home.html-Seite
     db_con = db.get_db_con()
     sql_query = f'SELECT question, answer1, answer2, answer3, answer4 FROM questions WHERE question_id = {random_numbers[q_count]}'
     result = db_con.execute(sql_query).fetchone()
     question = result[0]
     answers = list(result[1:])
     random.shuffle(answers)
-    return jsonify({'question': question, 'answers': answers})
+    is_quiz_finished = False
+    if q_count >= 8:  # Wenn die letzte Frage erreicht ist
+        is_quiz_finished = True
+    return jsonify({'question': question, 'answers': answers, 'isQuizFinished': is_quiz_finished})

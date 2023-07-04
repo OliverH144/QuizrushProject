@@ -59,6 +59,7 @@ An important design decision we made is to achieve displaying the new questions 
   - enabling users to choose from categories
   - (user login)
   - API 
+  - Score mit Namen in die Datenbank eintragen
 - achieved:<br>
 -  missed:<br>
 
