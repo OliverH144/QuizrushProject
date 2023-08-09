@@ -38,14 +38,14 @@
     for (var i = 0; i < buttons.length; i++) {
       buttons[i].disabled = true;  // Deaktivieren aller Buttons
     }
-    
+
     // Überprüfen, ob die ausgewählte Antwort korrekt ist
     var selectedAnswer = button.innerHTML;
     // var isCorrect = button.classList.contains('correct');
     
     var nextButton = document.getElementById("nextButton");
     nextButton.disabled = false;
-    
+
     // Ajax-Anfrage an den Server, um die Antwort zu überprüfen
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
@@ -71,7 +71,6 @@
   xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded"); //informiert  den Server das die Daten URL-codierten Format enthält
   xhttp.send("answer=" + selectedAnswer); //daten werden gesendet mit der ausgewählten antwort
   }
-
 
   
   function nextQuestion() {

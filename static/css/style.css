@@ -102,7 +102,7 @@
           }
           
           .answer-button.incorrect {
-            background-color: rgb(255, 0, 0);
+            background-color: red;
             color: white;
           }
 

@@ -32,6 +32,13 @@ def init_db():
         db_con.executescript(f.read().decode('utf8'))
     click.echo('Database has been initialized.')
 
+def insert_table():
+    db_con = get_db_con()
+    with current_app.open_resource('sql/add_tables.sql') as f:
+        db_con.executescript(f.read().decode('utf8'))
+    
+
+
 def insert_data():
     db_con = get_db_con()
     with current_app.open_resource('sql/insert_data.sql') as f:
