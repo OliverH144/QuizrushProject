@@ -109,8 +109,10 @@
         .settings {
             position: fixed;
             top: 50%;
-            left: 50%;
+            left: 50%; 
             transform: translate(-50%, -50%);
+            width: 400px; /* Breite des settingsPanel */
+            height: 300px; /* Höhe des settingsPanel */
             padding: 20px;
             background-color: #fff;
             border: 1px solid #ccc;
@@ -130,6 +132,42 @@
           body.dark-mode {
             background-color: #222;
             color: #fff;
+          }
+
+          .login-container {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 20px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+            z-index: 9999;
+          }
+          .login-input {
+            display: block;
+            margin-bottom: 10px;
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+          }
+          .login-button {
+            display: block;
+            margin-top: 10px;
+            padding: 10px 20px;
+            background-color: #ccc;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+          }
+          .register-link {
+            display: block;
+            margin-top: 10px;
+            color: #333;
+            text-decoration: none;
           }
 
 
