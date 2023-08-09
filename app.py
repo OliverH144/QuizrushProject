@@ -104,6 +104,7 @@ def get_quiz3():
     random.shuffle(answers)
     correct_answer = result[1]  # Annahme: Die erste Antwort (answer1) ist die richtige Antwort
     return render_template('quiz3.html', question=question, answers=answers, correct_answer=correct_answer, score=score)
+
 #testing some db interaction
 @app.route('/db/')
 def get_questions():
@@ -199,6 +200,20 @@ def search_by_category(category, number):
 def run_insert_data():
     db.insert_data()
     return 'Database flushed and populated with some sample data.'
+#adding table to database
+@app.route('/insert/table')
+def run_insert_table():
+    db.insert_table()
+#add user
+@app.route('/add_user')
+def add_user():
+    user='admin'
+    user="'"+str(user)+"'"
+    password='nimda'
+    password="'"+str(password)+"'"
+    db_con = db.get_db_con
+    insert_user_info = f'INSERT INTO users (user, password) VALUES ({user},{password});'
+    db_con.execute(insert_user_info)
 
 @app.route('/check_answer', methods=['POST'])
 def check_answer():
