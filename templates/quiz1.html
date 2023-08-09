@@ -41,7 +41,7 @@
     
     // Überprüfen, ob die ausgewählte Antwort korrekt ist
     var selectedAnswer = button.innerHTML;
-    var isCorrect = button.classList.contains('correct');
+    // var isCorrect = button.classList.contains('correct');
     
     var nextButton = document.getElementById("nextButton");
     nextButton.disabled = false;
@@ -63,29 +63,16 @@
       // Aktualisieren des Score-Werts auf der Seite
       document.getElementById("score").innerHTML = score;
 
-      // Timer starten, um zur nächsten Frage zu wechseln
-      startTimerForNextQuestion();
+
     }
   };
-  xhttp.open("POST", "/check_answer", true);
-  xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-  xhttp.send("answer=" + selectedAnswer);
+  //  Diese Zeilen des Codes dienen dazu, eine POST-Anfrage an den Server zu senden und die ausgewählte Antwort als Daten zu übermitteln
+  xhttp.open("POST", "/check_answer", true); // erste Parameter gibt die HTTP-Methode, zweite Parameter ist die URL, dritte Parameter fragt ob die Anfrage asynchron sein soll
+  xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded"); //informiert  den Server das die Daten URL-codierten Format enthält
+  xhttp.send("answer=" + selectedAnswer); //daten werden gesendet mit der ausgewählten antwort
   }
 
-  function startTimerForNextQuestion() {
-  // Timer-Funktion, die alle 1 Sekunde aufgerufen wird
-  timer = setInterval(function() {
-    timeLeft--;
-    timerDisplay.innerHTML = timeLeft;
 
-    // Überprüfen, ob der Timer abgelaufen ist
-    if (timeLeft <= 0) {
-      clearInterval(timer);  // Timer stoppen
-      disableAnswerButtons();  // Antwortbuttons deaktivieren
-      nextQuestion();  // Nächste Frage abrufen
-    }
-  }, 1000);
-}
   
   function nextQuestion() {
     var nextButton = document.getElementById("nextButton");
@@ -151,7 +138,7 @@
 <body>
   <div class="container">
     <div id="question-container">
-      <p id="question"></p>
+      <p class="style1" id="question"></p>
       <h2>Answers:</h2>
 
       <div class="button-container">
@@ -163,13 +150,13 @@
         </form>
       </div>
     </div>
-    <nav class="nav">
-      <div id="nextButtonContainer">
+    <nav class="nav2">
+      <div id="nextButtonContainer" class="button-container">
         <button type="button" id="nextButton" onclick="nextQuestion()" disabled class="button">Nächste Frage</button>
         <button type="button" id="resultButton" onclick="redirectToHome()" class="button" style="display: none;">Ergebnis</button>
       </div>
-      <p>Score: <span id="score">{{ score }}</span></p>
-      <p>Time Left: <span id="timer"></span></p>  <!-- Timer-Anzeige -->
+      <p class="style2">Score: <span id="score">{{ score }}</span></p>
+      <p class="style2">Time Left: <span id="timer"></span></p>  <!-- Timer-Anzeige -->
     </nav>
   </div>
 </body>

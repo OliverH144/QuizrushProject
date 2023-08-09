@@ -11,29 +11,35 @@
         <div style="float: right;">
 			
                 <button class="button" onclick="toggleSettings()">
-                  <img src="{{ url_for('static', filename='einstellung.jpg') }}" style="width: 80px; height: 50px;"> Einstellung
+                  <img src="{{ url_for('static', filename='einstellung.jpg') }}" style="width: 80px; height: 50px;"> Mehr
                 </button>
         </div>    
         <h1>Quizrush</h1>
     </nav>
 
-    <!-- <button onclick="toggleSettings()">Einstellungen</button> -->
-
     <div id="settingsPanel" class="settings" style="display: none;">
-        <button onclick="toggleDarkMode()">Dark Mode</button>
+      <button onclick="toggleDarkMode()">Dark-Mode</button>
+      
+      <div class="login-container">
+        <input type="text" class="login-input" placeholder="Name">
+        <input type="password" class="login-input" placeholder="Passwort">
+        <button class="login-button">Login</button>
+        <a href="{{ url_for('registrierung') }}"><button class="button">Registrieren</button></a>
+      </div>
     </div>
+  
 
     <script>
-        function toggleSettings() {
-          var settingsPanel = document.getElementById('settingsPanel');
-          settingsPanel.style.display = (settingsPanel.style.display === 'none') ? 'block' : 'none';
-        }
-    
-        function toggleDarkMode() {
-          var body = document.body;
-          body.classList.toggle('dark-mode');
-        }
-      </script>
+      function toggleSettings() {
+        var settingsPanel = document.getElementById('settingsPanel');
+        settingsPanel.style.display = (settingsPanel.style.display === 'none') ? 'block' : 'none';
+      }
+
+      function toggleDarkMode() {
+        var body = document.body;
+        body.classList.toggle('dark-mode');
+      }
+    </script>
     
     <section class="content">
         <header>{% block HEADER %}{% endblock %}</header>

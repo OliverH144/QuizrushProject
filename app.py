@@ -20,6 +20,10 @@ app.teardown_appcontext(db.close_db_con)
 def index():
     return render_template('home.html')
 
+@app.route('/registrierung/')
+def registrierung():
+    return render_template('registrierung.html')
+
 @app.route('/quiz1/')
 def get_quiz():
     db_con = db.get_db_con()
