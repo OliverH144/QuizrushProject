@@ -18,6 +18,7 @@ app.teardown_appcontext(db.close_db_con)
 def index():
     return render_template('home.html')
 
+
 def random10q(upper_limit):
     random_numbers=[]
     i=0
@@ -28,6 +29,11 @@ def random10q(upper_limit):
             i=i+1
         else: continue
     return random_numbers
+
+@app.route('/registrierung/')
+def registrierung():
+    return render_template('registrierung.html')
+
 
 @app.route('/quiz1/')
 def get_quiz():
