@@ -215,9 +215,7 @@ def run_insert_table():
 @app.route('/add_user')
 def add_user():
     user='admin'
-    #user="'"+str(user)+"'"
     password='nimda'
-    #password="'"+str(password)+"'"
     db_con = db.get_db_con()
     insert_user_info = f'INSERT INTO users (user, password) VALUES ("{user}", "{password}");'
     db_con.execute(insert_user_info)
