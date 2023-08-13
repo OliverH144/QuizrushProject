@@ -108,8 +108,9 @@ def get_quiz3():
     question = result[0]
     answers = list(result[1:])
     random.shuffle(answers)
-    correct_answer = result[1]  # Annahme: Die erste Antwort (answer1) ist die richtige Antwort
+    correct_answer = result[1]  
     return render_template('quiz3.html', question=question, answers=answers, correct_answer=correct_answer, score=score)
+#correct answer kann glaube raus bei return hier, richtigkeit wird später geprüft
 
 #testing some db interaction
 @app.route('/db/')
