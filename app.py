@@ -214,10 +214,15 @@ def run_insert_table():
 #add user
 @app.route('/add_user')
 def add_user():
-    user='admin'
-    password='nimda'
+    username = request.args.get('username')
+    password = request.args.get('password')
     db_con = db.get_db_con()
-    insert_user_info = f'INSERT INTO users (user, password) VALUES ("{user}", "{password}");'
+    check_name_taken= f'SELECT user FROM users WHERE user = ?' (username)
+    result= db_con.execute(check_name_taken).fetchone()
+    invalid = result[0]>0
+    if invalid ==True:
+             return jsonify({'invalid':invalid})
+    insert_user_info = f'INSERT INTO users (user, password) VALUES (?,?);'(username, password)
     db_con.execute(insert_user_info)
     db_con.commit()
     return 'User has been added'
@@ -226,11 +231,9 @@ def add_user():
 def check_credentials():
     username = request.args.get('username')
     password = request.args.get('password')
-
     db_con = db.get_db_con()
     query = f'SELECT COUNT(*) FROM users WHERE user = ? AND password = ?'
     result = db_con.execute(query, (username, password)).fetchone()
-
     valid = result[0] > 0
     return jsonify({'valid': valid})
 
