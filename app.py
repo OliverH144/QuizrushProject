@@ -211,15 +211,22 @@ def run_insert_data():
 def run_insert_table():
     db.insert_table()
 #add user
-@app.route('/add_user')
+@app.route('/add_user', methods=['POST'])
 def add_user():
-    user = 'test'
-    password = 'test'
+    user = request.form.get('username')
+    password = request.form.get('password')
+
     db_con = db.get_db_con()
-    insert_user_info = f'INSERT INTO users (user, password) VALUES ("{user}", "{password}");'
-    db_con.execute(insert_user_info)
+    check_query = f'SELECT COUNT(*) FROM users WHERE user = ?'
+    result = db_con.execute(check_query, (user,)).fetchone()
+
+    if result[0] > 0:
+        return 'Username allready exist'
+
+    insert_user_info = f'INSERT INTO users (user, password) VALUES (?, ?);'
+    db_con.execute(insert_user_info, (user, password))
     db_con.commit()
-    return 'User has been added'
+    return 'Registration successful'
 
 @app.route('/check_credentials')
 def check_credentials():
