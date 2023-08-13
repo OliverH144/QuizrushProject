@@ -219,10 +219,23 @@ def add_user():
     password='nimda'
     #password="'"+str(password)+"'"
     db_con = db.get_db_con()
-    insert_user_info = f'INSERT INTO users (user, password) VALUES ({user},{password});'
+    insert_user_info = f'INSERT INTO users (user, password) VALUES ("{user}", "{password}");'
     db_con.execute(insert_user_info)
     db_con.commit()
     return 'User has been added'
+
+@app.route('/check_credentials')
+def check_credentials():
+    username = request.args.get('username')
+    password = request.args.get('password')
+
+    db_con = db.get_db_con()
+    query = f'SELECT COUNT(*) FROM users WHERE user = ? AND password = ?'
+    result = db_con.execute(query, (username, password)).fetchone()
+
+    valid = result[0] > 0
+    return jsonify({'valid': valid})
+
 
 @app.route('/check_answer', methods=['POST'])
 def check_answer():
