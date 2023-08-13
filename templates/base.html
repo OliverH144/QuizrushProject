@@ -21,10 +21,11 @@
       <button onclick="toggleDarkMode()">Dark-Mode</button>
       
       <div class="login-container">
-        <input type="text" class="login-input" placeholder="Name">
-        <input type="password" class="login-input" placeholder="Passwort">
-        <button class="login-button">Login</button>
+        <input id="usernameInput" type="text" class="login-input" placeholder="Name">
+        <input id="passwordInput" type="password" class="login-input" placeholder="Passwort">
+        <button class="login-button" onclick="checkCredentials()">Login</button>
         <a href="{{ url_for('registrierung') }}"><button class="button">Registrieren</button></a>
+        <p id="loginStatus" style="display: none; color: green;">Anmeldung erfolgreich.</p>
       </div>
     </div>
   
@@ -39,6 +40,21 @@
         var body = document.body;
         body.classList.toggle('dark-mode');
       }
+
+      async function checkCredentials() {
+    var username = document.getElementById('usernameInput').value;
+    var password = document.getElementById('passwordInput').value;
+
+    const response = await fetch(`/check_credentials?username=${username}&password=${password}`);
+    const data = await response.json();
+
+    var loginStatus = document.getElementById('loginStatus');
+    if (data.valid) {
+      loginStatus.style.display = 'block';
+    } else {
+      loginStatus.style.display = 'none';
+    }
+  }
     </script>
     
     <section class="content">
