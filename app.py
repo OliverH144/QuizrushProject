@@ -64,7 +64,7 @@ def get_quiz2():
     q_count = 0
     global score
     score = 0
-    result = search_by_category('geography',1)
+    result = search_by_category('geography',1)#has to start at 1 because of how the subquery works
     question = result[0]
     answers = list(result[1:])
     random.shuffle(answers)
