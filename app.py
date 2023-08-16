@@ -30,6 +30,36 @@ def random10q(upper_limit):
         else: continue
     return random_numbers
 
+def random10q_category(category):
+    random10q_c=[]
+    c_ids=category_ids(category)
+    random10q(count_category_entries(category))
+    i=0
+    while i<10:
+        number=c_ids[random10q[i]]
+        random10q_c.append(number)
+        i=i+1
+    return random10q_c
+
+
+
+def category_ids(category):
+        category_ids=[]
+        i=1
+        while i<(count_category_entries(category)+1):
+            db_con = db.get_db_con()
+            sql_query_category =    (
+                                'SELECT question_id FROM' 
+                                '(SELECT ROW_NUMBER()OVER(ORDER BY question_id)AS row_num, question_id' 
+                                ' FROM questions JOIN category USING (question_id) '
+                                f' WHERE category_name = {category})' 
+                                f' WHERE row_num = {i}'
+            )
+        category_ids.append(db_con.execute(sql_query_category).fetchone())
+        return category_ids    
+
+    
+
 @app.route('/registrierung/')
 def registrierung():
     return render_template('registrierung.html')
@@ -57,14 +87,17 @@ def get_quiz():
 
 @app.route('/quiz2/')
 def get_quiz2():
-    global random_numbers
+    global random_numbers_category
     random_numbers = []
-    random_numbers=random10q(count_category_entries('geography')) 
+    random_numbers=random10q(count_category_entries('proverbs')) 
+
+
+
     global q_count
     q_count = 0
     global score
     score = 0
-    result = search_by_category('geography',1)#has to start at 1 because of how the subquery works
+    result = search_by_category('proverbs',1)#has to start at 1 because of how the subquery works
     question = result[0]
     answers = list(result[1:])
     random.shuffle(answers)
@@ -73,32 +106,19 @@ def get_quiz2():
 
 @app.route('/quiz3/')
 def get_quiz3():
-    db_con = db.get_db_con()
-    sql_query = 'SELECT COUNT(question) from questions'
-    question_count = db_con.execute(sql_query).fetchone()
-    count = question_count[0]
     global random_numbers
     random_numbers = []
+    random_numbers=random10q(count_category_entries('sport')) 
     global q_count
     q_count = 0
     global score
     score = 0
-    i = 0
-    while i < 10:
-        number = random.randint(1, count)
-        if number not in random_numbers:
-            random_numbers.append(number)
-            i = i + 1
-        else:
-            continue
-    sql_query = f'SELECT question, answer1, answer2, answer3, answer4 FROM questions WHERE question_id = {random_numbers[0]}'
-    result = db_con.execute(sql_query).fetchone()
+    result = search_by_category('sport',1)#has to start at 1 because of how the subquery works
     question = result[0]
     answers = list(result[1:])
-    random.shuffle(answers)
-    correct_answer = result[1]  
-    return render_template('quiz3.html', question=question, answers=answers, correct_answer=correct_answer, score=score)
-#correct answer kann glaube raus bei return hier, richtigkeit wird später geprüft
+    random.shuffle(answers)  
+    return render_template('quiz3.html', question=question, answers=answers, score=score)
+
 
 #testing some db interaction
 @app.route('/db/')
@@ -135,7 +155,7 @@ def get_questions():
     random.shuffle(answers)
 
     #Searching by category
-    category= "'geography'"
+    category= "'proverbs'"
     sql_query_cat_count = f'SELECT COUNT(category_id) FROM category WHERE category_name = {category}'
     cat_q_count = db_con.execute(sql_query_cat_count).fetchone()[0]
     random_numbers=random10q(cat_q_count)
@@ -155,7 +175,7 @@ def get_questions():
         cat_q=query[0]
         cat_qs.append(cat_q)
         y=y+1
-    xxx=count_category_entries('geography')
+    xxx=count_category_entries('proverbs')
     return f'S:{solution} A:{answers} Count:{xxx} Question:{cat_qs}'
     #return f'Count:{count} Random Numbers:{random_numbers} Random Questions:{r_questions} Solution: {solution} Answers:{answers}'
 
@@ -237,13 +257,12 @@ def check_answer():
     if is_correct:
         score += 1  # Erhöhen Sie den Score um eins, wenn die Antwort korrekt ist
     return jsonify({'isCorrect': is_correct, 'score': score})
+
     
 @app.route('/next_question')
 def next_question():
     global q_count
     q_count = q_count + 1
-    # if q_count > 8:
-    #     return redirect(url_for('index'))  # Zurück zur home.html-Seite
     db_con = db.get_db_con()
     sql_query = f'SELECT question, answer1, answer2, answer3, answer4 FROM questions WHERE question_id = {random_numbers[q_count]}'
     result = db_con.execute(sql_query).fetchone()
@@ -254,3 +273,20 @@ def next_question():
     if q_count >= 8:  # Wenn die letzte Frage erreicht ist
         is_quiz_finished = True
     return jsonify({'question': question, 'answers': answers, 'isQuizFinished': is_quiz_finished})
+
+
+@app.route('/next_question_category')
+def next_question():
+    global q_count
+    q_count = q_count + 1
+    result = result = search_by_category('proverbs',q_count)
+    question = result[0]
+    answers = list(result[1:])
+    random.shuffle(answers)
+    is_quiz_finished = False
+    if q_count >= 8:  # Wenn die letzte Frage erreicht ist
+        is_quiz_finished = True
+    return jsonify({'question': question, 'answers': answers, 'isQuizFinished': is_quiz_finished})
+
+
+
