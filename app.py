@@ -33,15 +33,13 @@ def random10q(upper_limit):
 def random10q_category(category):
     random10q_c=[]
     c_ids=category_ids(category)
-    random10q(count_category_entries(category))
-    i=0
-    while i<10:
-        number=c_ids[random10q[i]]
-        random10q_c.append(number)
-        i=i+1
+    while len(random10q_c)<10:
+        random.shuffle(c_ids)
+        number=c_ids[len(random10q_c)]
+        if number not in random10q_c:
+            random10q_c.append(number)
+        else: continue
     return random10q_c
-
-
 
 def category_ids(category):
         category_ids=[]
@@ -52,13 +50,12 @@ def category_ids(category):
                                 'SELECT question_id FROM' 
                                 '(SELECT ROW_NUMBER()OVER(ORDER BY question_id)AS row_num, question_id' 
                                 ' FROM questions JOIN category USING (question_id) '
-                                f' WHERE category_name = {category})' 
+                                f' WHERE category_name = "{category}")' 
                                 f' WHERE row_num = {i}'
             )
-        category_ids.append(db_con.execute(sql_query_category).fetchone())
+            category_ids.append(db_con.execute(sql_query_category).fetchone()[0])
+            i=i+1
         return category_ids    
-
-    
 
 @app.route('/registrierung/')
 def registrierung():
@@ -87,17 +84,13 @@ def get_quiz():
 
 @app.route('/quiz2/')
 def get_quiz2():
-    global random_numbers_category
-    random_numbers = []
-    random_numbers=random10q(count_category_entries('proverbs')) 
-
-
-
     global q_count
     q_count = 0
     global score
     score = 0
-    result = search_by_category('proverbs',1)#has to start at 1 because of how the subquery works
+    global random_numbers
+    random_numbers=random10q_category('proverbs')
+    result = search_by_id(random_numbers[q_count])
     question = result[0]
     answers = list(result[1:])
     random.shuffle(answers)
@@ -189,6 +182,20 @@ def db2():#testing db interaction
     random.shuffle(answers)
     return f'Question:{question};Answers:{answers}; entries:{y}; rn:{z}'
 
+@app.route('/db3')
+def db3():
+    q_count=0
+    category='proverbs'
+    ids=category_ids(category)
+    #random.shuffle(ids)
+    c_ids=random10q_category('proverbs')
+    result = search_by_id(c_ids[q_count])
+    question = result[0]
+    answers = list(result[1:])
+    random.shuffle(answers)
+    return f'ids:{ids} Question:{question}, Answers:{answers}'
+
+
 def count_category_entries(category):
     category="'"+str(category)+"'"
     db_con = db.get_db_con()
@@ -208,6 +215,10 @@ def search_by_category(category, number):
         )
     return db_con.execute(sql_query_category).fetchone()
     
+def search_by_id(question_id):
+    db_con = db.get_db_con()
+    query= f'SELECT question, answer1, answer2, answer3, answer4 FROM questions WHERE question_id = {question_id}'   
+    return db_con.execute(query).fetchone()
     
 
 #adding data to database
@@ -275,18 +286,21 @@ def next_question():
     return jsonify({'question': question, 'answers': answers, 'isQuizFinished': is_quiz_finished})
 
 
-@app.route('/next_question_category')
-def next_question():
-    global q_count
-    q_count = q_count + 1
-    result = result = search_by_category('proverbs',q_count)
-    question = result[0]
-    answers = list(result[1:])
-    random.shuffle(answers)
-    is_quiz_finished = False
-    if q_count >= 8:  # Wenn die letzte Frage erreicht ist
-        is_quiz_finished = True
-    return jsonify({'question': question, 'answers': answers, 'isQuizFinished': is_quiz_finished})
+# @app.route('/next_question_category')
+# def next_question_category():
+#     global q_count
+#     q_count = q_count + 1
+#     db_con = db.get_db_con()
+#     sql_query = f'SELECT question, answer1, answer2, answer3, answer4 FROM questions WHERE question_id = {c_ids[q_count]}'
+#     result = db_con.execute(sql_query).fetchone()
+#     question = result[0]
+#     answers = list(result[1:])
+#     random.shuffle(answers)
+#     is_quiz_finished = False
+#     if q_count >= 8:  # Wenn die letzte Frage erreicht ist
+#         is_quiz_finished = True
+#     return jsonify({'question': question, 'answers': answers, 'isQuizFinished': is_quiz_finished})
+
 
 
 
