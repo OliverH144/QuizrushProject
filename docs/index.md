@@ -102,7 +102,7 @@ The table "users" simply hosts the usernames of the users in the element "user" 
 
 <table>
 	<tr>
-		<th colspan="3">questions</th>
+		<th colspan="3">users</th>
 	</tr>
 		<tr>
 			<td>user</td>
