@@ -255,15 +255,13 @@ def check_answer():
     correct_answer = db_con.execute(sql_query).fetchone()[0]
     is_correct = selected_answer == correct_answer
     if is_correct:
-        score += 1  # Erhöhen Sie den Score um eins, wenn die Antwort korrekt ist
+        score += 1
     return jsonify({'isCorrect': is_correct, 'score': score})
     
 @app.route('/next_question')
 def next_question():
     global q_count
     q_count = q_count + 1
-    # if q_count > 8:
-    #     return redirect(url_for('index'))  # Zurück zur home.html-Seite
     db_con = db.get_db_con()
     sql_query = f'SELECT question, answer1, answer2, answer3, answer4 FROM questions WHERE question_id = {random_numbers[q_count]}'
     result = db_con.execute(sql_query).fetchone()
@@ -274,3 +272,8 @@ def next_question():
     if q_count >= 8:  # Wenn die letzte Frage erreicht ist
         is_quiz_finished = True
     return jsonify({'question': question, 'answers': answers, 'isQuizFinished': is_quiz_finished})
+
+@app.route('/api/score', methods=['GET'])
+def get_score():
+    global score
+    return jsonify({'score': score})
