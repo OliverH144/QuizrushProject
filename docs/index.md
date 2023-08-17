@@ -98,7 +98,7 @@ The table "users" simply hosts the usernames of the users in the element "user" 
 			<td>integer</td>
 			<td>FK</td>
 		</tr>
-	</table>
+</table>
 
 <table>
 	<tr>
