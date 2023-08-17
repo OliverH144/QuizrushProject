@@ -240,7 +240,7 @@ def next_question():
     answers = list(result[1:])
     random.shuffle(answers)
     is_quiz_finished = False
-    if q_count >= 8:  
+    if q_count ==9:  
         is_quiz_finished = True
     return jsonify({'question': question, 'answers': answers, 'isQuizFinished': is_quiz_finished})
 
