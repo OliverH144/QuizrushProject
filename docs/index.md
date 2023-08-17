@@ -45,7 +45,7 @@ The table "users" simply hosts the usernames of the users in the element "user" 
 <table>
 	<tr>
 		<th colspan="3">questions</th>
-		</tr>
+	</tr>
 		<tr>
 			<td>question_id</td>
 			<td>INTEGER</td>
@@ -82,7 +82,7 @@ The table "users" simply hosts the usernames of the users in the element "user" 
 <table>
 	<tr>
 		<th colspan="3">category</th>
-		</tr>
+	</tr>
 		<tr>
 			<td>category_id</td>
 			<td>INTEGER</td>
@@ -106,12 +106,12 @@ The table "users" simply hosts the usernames of the users in the element "user" 
 	</tr>
 		<tr>
 			<td>user</td>
-			<td>VARCHAR(16)
+			<td>VARCHAR(16)</td>
 			<td>PK</td>
 		</tr>
 		<tr>
 			<td>password</td>
-			<td>VARCHAR(20)
+			<td>VARCHAR(20)</td>
 			<td></td>
 		</tr>
 </table>
