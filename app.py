@@ -99,18 +99,78 @@ def get_quiz2():
 
 @app.route('/quiz3/')
 def get_quiz3():
-    global random_numbers
-    random_numbers = []
-    random_numbers=random10q(count_category_entries('sport')) 
     global q_count
     q_count = 0
     global score
     score = 0
-    result = search_by_category('sport',1)#has to start at 1 because of how the subquery works
+    global random_numbers
+    random_numbers=random10q_category('geography')
+    result = search_by_id(random_numbers[q_count])
     question = result[0]
     answers = list(result[1:])
-    random.shuffle(answers)  
+    random.shuffle(answers)
+    #correct_answer = result[1]  
     return render_template('quiz3.html', question=question, answers=answers, score=score)
+
+@app.route('/quiz4/')
+def get_quiz4():
+    global q_count
+    q_count = 0
+    global score
+    score = 0
+    global random_numbers
+    random_numbers=random10q_category('history')
+    result = search_by_id(random_numbers[q_count])
+    question = result[0]
+    answers = list(result[1:])
+    random.shuffle(answers)
+    #correct_answer = result[1]  
+    return render_template('quiz4.html', question=question, answers=answers, score=score)
+
+@app.route('/quiz5/')
+def get_quiz5():
+    global q_count
+    q_count = 0
+    global score
+    score = 0
+    global random_numbers
+    random_numbers=random10q_category('pop-culture')
+    result = search_by_id(random_numbers[q_count])
+    question = result[0]
+    answers = list(result[1:])
+    random.shuffle(answers)
+    #correct_answer = result[1]  
+    return render_template('quiz5.html', question=question, answers=answers, score=score)
+
+@app.route('/quiz6/')
+def get_quiz6():
+    global q_count
+    q_count = 0
+    global score
+    score = 0
+    global random_numbers
+    random_numbers=random10q_category('sport')
+    result = search_by_id(random_numbers[q_count])
+    question = result[0]
+    answers = list(result[1:])
+    random.shuffle(answers)
+    #correct_answer = result[1]  
+    return render_template('quiz6.html', question=question, answers=answers, score=score)
+
+@app.route('/quiz7/')
+def get_quiz7():
+    global q_count
+    q_count = 0
+    global score
+    score = 0
+    global random_numbers
+    random_numbers=random10q_category('bio')
+    result = search_by_id(random_numbers[q_count])
+    question = result[0]
+    answers = list(result[1:])
+    random.shuffle(answers)
+    #correct_answer = result[1]  
+    return render_template('quiz7.html', question=question, answers=answers, score=score)
 
 
 @app.route('/score')
