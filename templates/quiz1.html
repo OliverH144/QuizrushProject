@@ -74,18 +74,18 @@
 
   
   function nextQuestion() {
-    var nextButton = document.getElementById("nextButton");
-    var resultButton = document.getElementById("resultButton");
-    nextButton.disabled = true;
+  var nextButton = document.getElementById("nextButton");
+  var resultButton = document.getElementById("resultButton");
+  nextButton.disabled = true;
 
-    // Zurücksetzen der Buttons und Hintergrundfarben
-    var buttons = document.getElementsByClassName("answer-button");
-    for (var i = 0; i < buttons.length; i++) {
-      buttons[i].disabled = false;  // Buttons aktivieren
-      buttons[i].classList.remove('correct', 'incorrect');  // Zurücksetzen der Hintergrundfarben
-    }
+  // Zurücksetzen der Buttons und Hintergrundfarben
+  var buttons = document.getElementsByClassName("answer-button");
+  for (var i = 0; i < buttons.length; i++) {
+    buttons[i].disabled = false;
+    buttons[i].classList.remove('correct', 'incorrect');
+  }
 
-    // Ajax-Anfrage an den Server, um die nächste Frage abzurufen
+  // Ajax-Anfrage an den Server, um die nächste Frage abzurufen
   var xhttp = new XMLHttpRequest();
   xhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
@@ -99,13 +99,13 @@
       var answerButtons = document.getElementsByClassName("answer-button");
       for (var i = 0; i < answerButtons.length; i++) {
         answerButtons[i].innerHTML = answers[i];
-        answerButtons[i].classList.remove('correct', 'incorrect');  // Zurücksetzen der Hintergrundfarben
+        answerButtons[i].classList.remove('correct', 'incorrect');
       }
 
       // Überprüfen auf das Beenden des Quiz und Aktualisieren der Buttons
       if (response.isQuizFinished) {
-        nextButton.style.display = "none";  // "Nächste Frage"-Button ausblenden
-        resultButton.style.display = "block";  // "Ergebnis"-Button anzeigen
+        window.location.href = "/score"; 
+        return;  
       }
 
       // Timer für die nächste Frage starten
@@ -114,11 +114,7 @@
   };
   xhttp.open("GET", "/next_question", true);
   xhttp.send();
-  }
-
-  function redirectToHome() {
-    window.location.href = "/";  // Weiterleitung zur home.html-Seite
-  }
+}
 
   function disableAnswerButtons() {
     var buttons = document.getElementsByClassName("answer-button");
@@ -151,8 +147,8 @@
     </div>
     <nav class="nav2">
       <div id="nextButtonContainer" class="button-container">
-        <button type="button" id="nextButton" onclick="nextQuestion()" disabled class="button">Nächste Frage</button>
-        <button type="button" id="resultButton" onclick="redirectToHome()" class="button" style="display: none;">Ergebnis</button>
+        <button type="button" id="nextButton" onclick="nextQuestion()" disabled class="button">Next Question</button>
+        <button type="button" id="resultButton" onclick="redirectToHome()" class="button" style="display: none;">Result</button>
       </div>
       <p class="style2">Score: <span id="score">{{ score }}</span></p>
       <p class="style2">Time Left: <span id="timer"></span></p>  <!-- Timer-Anzeige -->

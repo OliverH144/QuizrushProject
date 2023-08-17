@@ -7,53 +7,58 @@
     <nav class="nav">
         <div style="float: left;">
 			<a href="{{ url_for('index') }}"><button class="button">Home</button></a>
+            <p id="loggedInUsername" style="display: none;"></p>
 		</div>
         <div style="float: right;">
-			
-                <button class="button" onclick="toggleSettings()">
-                  <img src="{{ url_for('static', filename='einstellung.jpg') }}" style="width: 80px; height: 50px;"> Mehr
-                </button>
+            <button class="button" onclick="toggleSettings()">
+                <img src="{{ url_for('static', filename='einstellung.jpg') }}" style="width: 80px; height: 50px;"> Login
+            </button>
         </div>    
         <h1>Quizrush</h1>
+        <p id="loggedInUsername" style="display: none;"></p>
     </nav>
 
     <div id="settingsPanel" class="settings" style="display: none;">
         <div style="display: flex; flex-direction: column; align-items: center;">
-          <input id="usernameInput" type="text" class="login-input" placeholder="Name">
-          <input id="passwordInput" type="password" class="login-input" placeholder="Passwort">
-          <button class="login-button" onclick="checkCredentials()">Login</button>
-          <a href="{{ url_for('registrierung') }}"><button class="button">Registrieren</button></a>
-          <p id="loginStatus" style="display: none; color: green;">Anmeldung erfolgreich.</p>
-          <p id="loginStatus" style="display: block; color: rgb(128, 0, 0);">Anmeldung nicht erfolgreich.</p>
+            <input id="usernameInput" type="text" class="login-input" placeholder="Name">
+            <input id="passwordInput" type="password" class="login-input" placeholder="Passwort">
+            <button class="button" onclick="checkCredentials()">Login</button>
+            <a href="{{ url_for('registrierung') }}"><button class="button">Sign up</button></a>
+            <p id="loginStatusSuccess" class="login-status" style="display: none; color: green;">Login successful</p>
+            <p id="loginStatusFailure" class="login-status" style="display: none; color: rgb(128, 0, 0);">Login unsuccessful</p>
         </div>
-      </div>
-  
-
+    </div>
+    
     <script>
-      function toggleSettings() {
-        var settingsPanel = document.getElementById('settingsPanel');
-        settingsPanel.style.display = (settingsPanel.style.display === 'none') ? 'block' : 'none';
-      }
+        var loggedInUsername = document.getElementById('loggedInUsername'); 
 
-      function toggleDarkMode() {
-        var body = document.body;
-        body.classList.toggle('dark-mode');
-      }
+        function toggleSettings() {
+            var settingsPanel = document.getElementById('settingsPanel');
+            settingsPanel.style.display = (settingsPanel.style.display === 'none') ? 'block' : 'none';
+        }
 
-      async function checkCredentials() {
-        var username = document.getElementById('usernameInput').value;
-        var password = document.getElementById('passwordInput').value;
+        async function checkCredentials() {
+            var username = document.getElementById('usernameInput').value;
+            var password = document.getElementById('passwordInput').value;
 
-        const response = await fetch(`/check_credentials?username=${username}&password=${password}`);
-        const data = await response.json();
+            const response = await fetch(`/check_credentials?username=${username}&password=${password}`);
+            const data = await response.json();
 
-    var loginStatus = document.getElementById('loginStatus');
-    if (data.valid) {
-      loginStatus.style.display = 'block';
-    } else {
-      loginStatus.style.display = 'none';
-    }
-  }
+            var loginStatusSuccess = document.getElementById('loginStatusSuccess');
+            var loginStatusFailure = document.getElementById('loginStatusFailure');
+
+            if (data.valid) {
+                loggedInUsername.textContent = `Hallo, ${username}`;
+                loginStatusSuccess.style.display = 'block';
+                toggleSettings();
+                setTimeout(function() {
+                    loginStatusSuccess.style.display = 'none';
+                }, 15000);
+                loginStatusFailure.style.display = 'none';
+            } else {
+                // ...
+            }
+        }
     </script>
     
     <section class="content">

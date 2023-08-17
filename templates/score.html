@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+{% extends 'base.html' %}
+
+{% block HEADER %}
+<h6></h6>
+{% endblock %}
+
+{% block CONTENT %}
+<body>
+  <div class="container">
+    <h1>Score</h1>
+    <p>Your final score is: <span id="final-score">{{ score }}</span></p>
+  </div>
+</body>
+{% endblock %}
+</html>

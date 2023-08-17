@@ -111,6 +111,11 @@ def get_quiz3():
     correct_answer = result[1]  # Annahme: Die erste Antwort (answer1) ist die richtige Antwort
     return render_template('quiz3.html', question=question, answers=answers, correct_answer=correct_answer, score=score)
 
+@app.route('/score')
+def show_score():
+    global score
+    return render_template('score.html', score=score)
+
 #testing some db interaction
 @app.route('/db/')
 def get_questions():
