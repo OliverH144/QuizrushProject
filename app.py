@@ -286,20 +286,6 @@ def next_question():
     return jsonify({'question': question, 'answers': answers, 'isQuizFinished': is_quiz_finished})
 
 
-# @app.route('/next_question_category')
-# def next_question_category():
-#     global q_count
-#     q_count = q_count + 1
-#     db_con = db.get_db_con()
-#     sql_query = f'SELECT question, answer1, answer2, answer3, answer4 FROM questions WHERE question_id = {c_ids[q_count]}'
-#     result = db_con.execute(sql_query).fetchone()
-#     question = result[0]
-#     answers = list(result[1:])
-#     random.shuffle(answers)
-#     is_quiz_finished = False
-#     if q_count >= 8:  # Wenn die letzte Frage erreicht ist
-#         is_quiz_finished = True
-#     return jsonify({'question': question, 'answers': answers, 'isQuizFinished': is_quiz_finished})
 
 
 
