@@ -169,6 +169,9 @@ INSERT INTO category (question_id, category_name) VALUES ("81","biology");
 INSERT INTO questions (question, answer1, answer2, answer3, answer4) VALUES ("Which of these is also known as -beach apple-?","Manchineel","Pomegranate","Apricot","Cantaloupe");
 INSERT INTO category (question_id, category_name) VALUES ("82","biology");
 
+INSERT INTO questions (question, answer1, answer2, answer3, answer4) VALUES ("Which of these looks most similar to the blueberry","Juneberry","Strawberry","Cloudberry","Cranberry");
+INSERT INTO category (question_id, category_name) VALUES ("83","biology");
+
 
 
 COMMIT;
