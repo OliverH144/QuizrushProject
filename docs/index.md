@@ -7,10 +7,18 @@ nav_order: 0
 Testing your knowledge with fast paced and timed questions.
 
 ## Team members
-Peer Schüßler<br>
+Peer Schüßler
+
+Mtr.N. : 77211868539
+
 Oliver Hartmann
 
+Mtr.N. : 77211870365
+## Eidesstattliche Erklärung
 
+Die oben genannten Teammitglieder erklären an Eides statt:
+
+> Diese Arbeit wurde selbständig und eigenhändig erstellt. Die den benutzten Quellen wörtlich oder inhaltlich entommenen Stellen sind als solche kenntlich gemacht. Diese Erklärung gilt für jeglichen Inhalt und umfasst sowohl diese Dokumentation als auch den als Projektergebnis eingereichten Quellcode.
 
 ## Value Proposition
 
@@ -111,6 +119,7 @@ The table "users" simply hosts the usernames of the users in the element "user" 
 
 ## API Reference
 
+The score is read out and made publicly available for anyone who has access to it.
 
 ## Design Decisions
 
