@@ -108,6 +108,62 @@ def get_quiz3():
     random.shuffle(answers)
     return render_template('quiz3.html', question=question, answers=answers, score=score)
 
+@app.route('/quiz4/')
+def get_quiz4():
+    global q_count
+    q_count = 0
+    global score
+    score = 0
+    global random_numbers
+    random_numbers=random10q_category('history')
+    result = search_by_id(random_numbers[q_count])
+    question = result[0]
+    answers = list(result[1:])
+    random.shuffle(answers)  
+    return render_template('quiz4.html', question=question, answers=answers, score=score)
+
+@app.route('/quiz5/')
+def get_quiz5():
+    global q_count
+    q_count = 0
+    global score
+    score = 0
+    global random_numbers
+    random_numbers=random10q_category('pop-culture')
+    result = search_by_id(random_numbers[q_count])
+    question = result[0]
+    answers = list(result[1:])
+    random.shuffle(answers)  
+    return render_template('quiz5.html', question=question, answers=answers, score=score)
+
+@app.route('/quiz6/')
+def get_quiz6():
+    global q_count
+    q_count = 0
+    global score
+    score = 0
+    global random_numbers
+    random_numbers=random10q_category('sport')
+    result = search_by_id(random_numbers[q_count])
+    question = result[0]
+    answers = list(result[1:])
+    random.shuffle(answers)  
+    return render_template('quiz6.html', question=question, answers=answers, score=score)
+
+@app.route('/quiz7/')
+def get_quiz7():
+    global q_count
+    q_count = 0
+    global score
+    score = 0
+    global random_numbers
+    random_numbers=random10q_category('bio')
+    result = search_by_id(random_numbers[q_count])
+    question = result[0]
+    answers = list(result[1:])
+    random.shuffle(answers)
+    return render_template('quiz7.html', question=question, answers=answers, score=score)
+
 @app.route('/score')
 def show_score():
     global score
@@ -170,7 +226,7 @@ def check_answer():
     correct_answer = db_con.execute(sql_query).fetchone()[0]
     is_correct = selected_answer == correct_answer
     if is_correct:
-        score += 1  
+        score += 1
     return jsonify({'isCorrect': is_correct, 'score': score})
     
 @app.route('/next_question')
@@ -188,8 +244,7 @@ def next_question():
         is_quiz_finished = True
     return jsonify({'question': question, 'answers': answers, 'isQuizFinished': is_quiz_finished})
 
-
-
-
-
-
+@app.route('/api/score', methods=['GET'])
+def get_score():
+    global score
+    return jsonify({'score': score})
