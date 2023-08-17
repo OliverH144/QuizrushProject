@@ -30,23 +30,23 @@
     </div>
     
     <script>
-        var loggedInUsername = document.getElementById('loggedInUsername'); 
-
+        var loggedInUsername = document.getElementById('loggedInUsername');
+    
         function toggleSettings() {
             var settingsPanel = document.getElementById('settingsPanel');
             settingsPanel.style.display = (settingsPanel.style.display === 'none') ? 'block' : 'none';
         }
-
+    
         async function checkCredentials() {
             var username = document.getElementById('usernameInput').value;
             var password = document.getElementById('passwordInput').value;
-
+    
             const response = await fetch(`/check_credentials?username=${username}&password=${password}`);
             const data = await response.json();
-
+    
             var loginStatusSuccess = document.getElementById('loginStatusSuccess');
             var loginStatusFailure = document.getElementById('loginStatusFailure');
-
+    
             if (data.valid) {
                 loggedInUsername.textContent = `Hallo, ${username}`;
                 loginStatusSuccess.style.display = 'block';
@@ -56,7 +56,8 @@
                 }, 15000);
                 loginStatusFailure.style.display = 'none';
             } else {
-                // ...
+                loginStatusFailure.style.display = 'block'; // Display failure message
+                loginStatusSuccess.style.display = 'none';  // Hide success message
             }
         }
     </script>
