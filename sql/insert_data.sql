@@ -160,6 +160,18 @@ INSERT INTO category (question_id, category_name) VALUES ("77","sport");
 INSERT INTO questions (question, answer1, answer2, answer3, answer4) VALUES ("What is the length of a marathon?","42,195 km","45 km","40,525 km","45,565 km");
 INSERT INTO category (question_id, category_name) VALUES ("78","sport");
 
+INSERT INTO questions (question, answer1, answer2, answer3, answer4) VALUES ("Which of these is not a neurotransmitter?","Hemoglobin","Dopamin","Serotonin","Noradrenalin");
+INSERT INTO category (question_id, category_name) VALUES ("79","biology");
+INSERT INTO questions (question, answer1, answer2, answer3, answer4) VALUES ("Adenosine triphosphate or ATP is a source of ... at the cellular level.","energy","water","dna","cells");
+INSERT INTO category (question_id, category_name) VALUES ("80","biology");
+INSERT INTO questions (question, answer1, answer2, answer3, answer4) VALUES ("Which of the following is actually not a nut?","Coconut","Hazelnut","Chestnut","Mongongo");
+INSERT INTO category (question_id, category_name) VALUES ("81","biology");
+INSERT INTO questions (question, answer1, answer2, answer3, answer4) VALUES ("Which of these is also known as -beach apple-?","Manchineel","Pomegranate","Apricot","Cantaloupe");
+INSERT INTO category (question_id, category_name) VALUES ("82","biology");
+
+INSERT INTO questions (question, answer1, answer2, answer3, answer4) VALUES ("Which of these looks most similar to the blueberry","Juneberry","Strawberry","Cloudberry","Cranberry");
+INSERT INTO category (question_id, category_name) VALUES ("83","biology");
+
 
 
 COMMIT;
