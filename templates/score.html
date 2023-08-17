@@ -10,8 +10,14 @@
 <body>
   <div class="container">
     <h1>Score</h1>
-    <p>Your final score is: <span id="final-score">{{ score }}</span></p>
-  </div>
+    <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+      <div style="text-align: center;">
+        <p>Your final score is: <span id="final-score">{{ score }}</span></p>
+      </div>
+      <div>
+        <a href="{{ url_for('get_score') }}"><button class="button">API</button></a>
+      </div>
+    </div>
 </body>
 {% endblock %}
 </html>

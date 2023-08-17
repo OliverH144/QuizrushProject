@@ -164,7 +164,7 @@ def get_quiz7():
     global score
     score = 0
     global random_numbers
-    random_numbers=random10q_category('bio')
+    random_numbers=random10q_category('biology')
     result = search_by_id(random_numbers[q_count])
     question = result[0]
     answers = list(result[1:])
