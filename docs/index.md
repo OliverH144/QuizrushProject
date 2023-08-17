@@ -201,4 +201,3 @@ Database and backend work was primarily done by Oliver Hartmann.
 
 However almost everything was discussed together and sometimes work was done in the others area.
 
-
