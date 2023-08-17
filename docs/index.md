@@ -16,7 +16,11 @@ Quizrush aims to entertain to people of all ages with engaging quizzes but espec
 
 ## App Structure
 
+The HTML structure is the basic framework of the quiz page. This is where the various sections, elements and content are defined. The CSS file takes care of the styling and layout of the quiz page. The JavaScript file enables the interactions on the page, such as showing and hiding forms, loading quiz questions and score tracking. The App.py provides the connection to the database and the HTML section.
+
 ## App Behavior
+
+The quiz page allows users to interactively take a quiz by choosing from seven different categories. They have the option to log in or register to access the quiz. After selecting a category, they start the quiz by answering a series of questions. The questions are tailored to the selected category, and users select the correct answer from the options provided. After completing the quiz, the score page displays the total score based on the number of correct answers. Users then have the option to start the quiz again with a different category or exit the page. Visual feedback for correct and incorrect answers are displayed during the quiz process
 
 ## Data Model
 
@@ -59,8 +63,18 @@ An important design decision we made is to achieve displaying the new questions 
   - enabling users to choose from categories
   - (user login)
   - API 
-  - Score mit Namen in die Datenbank eintragen
+  - Integrating the the score to the DB
 - achieved:<br>
+  - Establishing and Integrating the DB<br>
+  - Completing the core gameplay functions
+  - visually pleasing design not complete
+  - enabling users to choose from categories
+  - user login
+  - API
 -  missed:<br>
+  - Integrating the the score to the DB
+  - visually pleasing design not complete
+
 
 ## Individual contribution
+
