@@ -18,7 +18,6 @@ app.teardown_appcontext(db.close_db_con)
 def index():
     return render_template('home.html')
 
-
 def random10q(upper_limit):
     random_numbers=[]
     i=0
@@ -61,7 +60,6 @@ def category_ids(category):
 def registrierung():
     return render_template('registrierung.html')
 
-
 @app.route('/quiz1/')
 def get_quiz():
     db_con = db.get_db_con()
@@ -94,7 +92,6 @@ def get_quiz2():
     question = result[0]
     answers = list(result[1:])
     random.shuffle(answers)
-    #correct_answer = result[1]  
     return render_template('quiz2.html', question=question, answers=answers, score=score)
 
 @app.route('/quiz3/')
@@ -109,7 +106,6 @@ def get_quiz3():
     question = result[0]
     answers = list(result[1:])
     random.shuffle(answers)
-    #correct_answer = result[1]  
     return render_template('quiz3.html', question=question, answers=answers, score=score)
 
 @app.route('/quiz4/')
@@ -123,8 +119,7 @@ def get_quiz4():
     result = search_by_id(random_numbers[q_count])
     question = result[0]
     answers = list(result[1:])
-    random.shuffle(answers)
-    #correct_answer = result[1]  
+    random.shuffle(answers)  
     return render_template('quiz4.html', question=question, answers=answers, score=score)
 
 @app.route('/quiz5/')
@@ -138,8 +133,7 @@ def get_quiz5():
     result = search_by_id(random_numbers[q_count])
     question = result[0]
     answers = list(result[1:])
-    random.shuffle(answers)
-    #correct_answer = result[1]  
+    random.shuffle(answers)  
     return render_template('quiz5.html', question=question, answers=answers, score=score)
 
 @app.route('/quiz6/')
@@ -153,8 +147,7 @@ def get_quiz6():
     result = search_by_id(random_numbers[q_count])
     question = result[0]
     answers = list(result[1:])
-    random.shuffle(answers)
-    #correct_answer = result[1]  
+    random.shuffle(answers)  
     return render_template('quiz6.html', question=question, answers=answers, score=score)
 
 @app.route('/quiz7/')
@@ -164,138 +157,38 @@ def get_quiz7():
     global score
     score = 0
     global random_numbers
-    random_numbers=random10q_category('bio')
+    random_numbers=random10q_category('biology')
     result = search_by_id(random_numbers[q_count])
     question = result[0]
     answers = list(result[1:])
     random.shuffle(answers)
-    #correct_answer = result[1]  
     return render_template('quiz7.html', question=question, answers=answers, score=score)
-
 
 @app.route('/score')
 def show_score():
     global score
     return render_template('score.html', score=score)
 
-#testing some db interaction
-@app.route('/db/')
-def get_questions():
-    db_con = db.get_db_con()
-    sql_query = 'SELECT COUNT(question) from questions'
-    question_count = db_con.execute(sql_query).fetchone()
-    count=question_count[0]
-    i=0
-    random_numbers=[]
-    r_questions=[]
-    while i <11:
-        number = random.randint(1, count)
-        if number not in random_numbers:
-            random_numbers.append(number)
-            i=i+1
-        else: continue
-    j=0
-    while j <10:
-        sql_query1 = f'SELECT question FROM questions WHERE question_id = {random_numbers[j]}'
-        question_query = db_con.execute(sql_query1).fetchone()
-        question = question_query[0]
-        r_questions.append(question)
-        j=j+1
-        
-    sql_query2 = 'SELECT answer1, answer2, answer3, answer4 FROM questions WHERE question_id = 2'
-    result = db_con.execute(sql_query2).fetchone()
-    solution=result[0]
-    answers = []
-    x=0
-    while x<4:   
-        answers.append(result[x])
-        x+=1
-    random.shuffle(answers)
-
-    #Searching by category
-    category= "'proverbs'"
-    sql_query_cat_count = f'SELECT COUNT(category_id) FROM category WHERE category_name = {category}'
-    cat_q_count = db_con.execute(sql_query_cat_count).fetchone()[0]
-    random_numbers=random10q(cat_q_count)
-    #cat_q_count=question_count[0]
-    y=1
-    cat_qs=[]
-    while y < (cat_q_count+1):
-        #x="'"+str(y)+"'"
-        sql_query_category =    (
-                                'SELECT question, answer1, answer2, answer3, answer4 FROM' 
-                                '(SELECT ROW_NUMBER()OVER(ORDER BY question_id)AS row_num, question, answer1, answer2, answer3, answer4' 
-                                ' FROM questions JOIN category USING (question_id) '
-                                f' WHERE category_name = {category})' 
-                                f' WHERE row_num = {y}'
-        )
-        query = db_con.execute(sql_query_category).fetchone()
-        cat_q=query[0]
-        cat_qs.append(cat_q)
-        y=y+1
-    xxx=count_category_entries('proverbs')
-    return f'S:{solution} A:{answers} Count:{xxx} Question:{cat_qs}'
-    #return f'Count:{count} Random Numbers:{random_numbers} Random Questions:{r_questions} Solution: {solution} Answers:{answers}'
-
-@app.route('/db2/')
-def db2():#testing db interaction
-    y=count_category_entries('geography')
-    z=random10q(y)
-    result=search_by_category('geography',z[1])
-    question=result[0]
-    answers=list(result[1:])
-    random.shuffle(answers)
-    return f'Question:{question};Answers:{answers}; entries:{y}; rn:{z}'
-
-@app.route('/db3')
-def db3():
-    q_count=0
-    category='proverbs'
-    ids=category_ids(category)
-    #random.shuffle(ids)
-    c_ids=random10q_category('proverbs')
-    result = search_by_id(c_ids[q_count])
-    question = result[0]
-    answers = list(result[1:])
-    random.shuffle(answers)
-    return f'ids:{ids} Question:{question}, Answers:{answers}'
-
-
 def count_category_entries(category):
     category="'"+str(category)+"'"
     db_con = db.get_db_con()
     sql_query_cat_count = f'SELECT COUNT(category_id) FROM category WHERE category_name = {category}'
     return db_con.execute(sql_query_cat_count).fetchone()[0]
-    
-
-def search_by_category(category, number):
-    category="'"+str(category)+"'"
-    db_con = db.get_db_con()
-    sql_query_category =    (
-                                'SELECT question, answer1, answer2, answer3, answer4 FROM' 
-                                '(SELECT ROW_NUMBER()OVER(ORDER BY question_id)AS row_num, question, answer1, answer2, answer3, answer4' 
-                                ' FROM questions JOIN category USING (question_id) '
-                                f' WHERE category_name = {category})' 
-                                f' WHERE row_num = {number}'
-        )
-    return db_con.execute(sql_query_category).fetchone()
-    
+        
 def search_by_id(question_id):
     db_con = db.get_db_con()
     query= f'SELECT question, answer1, answer2, answer3, answer4 FROM questions WHERE question_id = {question_id}'   
     return db_con.execute(query).fetchone()
     
-
-#adding data to database
-@app.route('/insert/data')
+@app.route('/insert/data') #adding data to database(manual)
 def run_insert_data():
     db.insert_data()
     return 'Database flushed and populated with some sample data.'
-#adding table to database
-@app.route('/insert/table')
+
+@app.route('/insert/table') #adding table to database(manual)
 def run_insert_table():
     db.insert_table()
-#add user
+
 @app.route('/add_user', methods=['POST'])
 def add_user():
     user = request.form.get('username')
@@ -306,13 +199,12 @@ def add_user():
     result = db_con.execute(check_query, (user,)).fetchone()
 
     if result[0] > 0:
-        return 'Username allready exist'
+        return 'Username already exist'
 
     insert_user_info = f'INSERT INTO users (user, password) VALUES (?, ?);'
     db_con.execute(insert_user_info, (user, password))
     db_con.commit()
     return 'Registration successful'
-
 
 @app.route('/check_credentials')
 def check_credentials():
@@ -336,7 +228,6 @@ def check_answer():
     if is_correct:
         score += 1
     return jsonify({'isCorrect': is_correct, 'score': score})
-
     
 @app.route('/next_question')
 def next_question():
@@ -349,7 +240,7 @@ def next_question():
     answers = list(result[1:])
     random.shuffle(answers)
     is_quiz_finished = False
-    if q_count >= 8:  # Wenn die letzte Frage erreicht ist
+    if q_count ==9:  
         is_quiz_finished = True
     return jsonify({'question': question, 'answers': answers, 'isQuizFinished': is_quiz_finished})
 
@@ -357,8 +248,3 @@ def next_question():
 def get_score():
     global score
     return jsonify({'score': score})
-
-
-
-
-
