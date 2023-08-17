@@ -7,8 +7,18 @@ nav_order: 0
 Testing your knowledge with fast paced and timed questions.
 
 ## Team members
-Peer Schüßler<br>
+Peer Schüßler
+
+Mtr.N. : 77211868539
+
 Oliver Hartmann
+
+Mtr.N. : 77211870365
+## Eidesstattliche Erklärung
+
+Die oben genannten Teammitglieder erklären an Eides statt:
+
+> Diese Arbeit wurde selbständig und eigenhändig erstellt. Die den benutzten Quellen wörtlich oder inhaltlich entommenen Stellen sind als solche kenntlich gemacht. Diese Erklärung gilt für jeglichen Inhalt und umfasst sowohl diese Dokumentation als auch den als Projektergebnis eingereichten Quellcode.
 
 ## Value Proposition
 
@@ -16,7 +26,7 @@ Quizrush aims to entertain to people of all ages with engaging quizzes but espec
 
 ## App Structure
 
-The HTML structure is the basic framework of the quiz page. This is where the various sections, elements and content are defined. The CSS file takes care of the styling and layout of the quiz page. The JavaScript file enables the interactions on the page, such as showing and hiding forms, loading quiz questions and score tracking. The App.py provides the connection to the database and the HTML section.
+The HTML structure is the basic framework of the quiz page. This is where the various sections, elements and content are defined. The CSS file takes care of the styling and layout of the quiz page. The JavaScript file enables the interactions on the page, such as showing and hiding forms, loading quiz questions and score tracking. The app.py provides the connection to the database and the HTML section. The database stores the questions, answers and which category they belong to, which is necessary for the quiz.
 
 ## App Behavior
 
@@ -24,57 +34,170 @@ The quiz page allows users to interactively take a quiz by choosing from seven d
 
 ## Data Model
 
-The planned Data Model so far consists of multiple tables of which the one for questions is most important for the Quizrush mode. This table will consist of an unique question_id, the questions themselves and their answers, of which answer1 will always be the correct one. The display of the questions will obviously be randomized because of this.<br> <br>A second "category" table is planned for the optional feature of choosing a specific category of questions.<br>
+The Data Model currently consists of the tables "questions", "category" and "users".
 
-The commands to create these tables are planned like this:
+The table "questions" hosts the questions and their respective answers which are essential for the quiz. Each question has a unique question_id that serves as primary key and is created via auto increment. Internally the first answer(answer1) has to be the correct one for the functions that use this table to work properly.
 
-CREATE TABLE questions( <br>
-	question_id INTEGER PRIMARY KEY AUTOINCREMENT, <br>
-	question VARCHAR(140), <br>
-	answer1 VARCHAR(20), <br>
-	answer2 VARCHAR(20), <br>
-	answer3 VARCHAR(20), <br>
-	answer4 VARCHAR(20)
-);
+In the table "category" the varying questions are assigned to their respective category using their question_id which acts as foreign key to the table "questions".
 
-CREATE TABLE category( <br>
-	category_id INTEGER PRIMARY KEY AUTOINCREMENT, <br>
-	category_name VARCHAR(30), <br>
-	question_id INTEGER, <br>
-	CONSTRAINT FK_question_id FOREIGN KEY(question_id) <br> REFERENCES questions(question_id)
-);
+The table "users" simply hosts the usernames of the users in the element "user" and their passwords in the element "password".
+
+<table>
+	<tr>
+		<th colspan="3">questions</th>
+		</tr>
+		<tr>
+			<td>question_id</td>
+			<td>INTEGER</td>
+			<td>PK</td>
+		</tr>
+		<tr>
+			<td>question</td>
+			<td>VARCHAR(140)</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>answer1</td>
+			<td>VARCHAR(20)</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>answer2</td>
+			<td>VARCHAR(20)</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>answer3</td>
+			<td>VARCHAR(20)</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>answer4</td>
+			<td>VARCHAR(20)</td>
+			<td></td>
+		</tr>
+	</table>
+
+	
+<table>
+	<tr>
+		<th colspan="3">category</th>
+		</tr>
+		<tr>
+			<td>category_id</td>
+			<td>INTEGER</td>
+			<td>PK</td>
+		</tr>
+		<tr>
+			<td>category_name</td>
+			<td>VARCHAR(30)</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>question_id</td>
+			<td>integer</td>
+			<td>FK</td>
+		</tr>
+	</table>
+
+<table>
+	<tr>
+		<th colspan="3">questions</th>
+	</tr>
+		<tr>
+			<td>user</td>
+			<td>VARCHAR(16)
+			<td>PK</td>
+		</tr>
+		<tr>
+			<td>password</td>
+			<td>VARCHAR(20)
+			<td></td>
+		</tr>
+</table>
+			
 
 ## API Reference
 
+The score is read out and made publicly available for anyone who has access to it.
 
 ## Design Decisions
 
-The core visual design decisions will most likely be how we display the questions and answers and how we will display the buttons that let the user navigate our application.
+#### Key Design Decision 1 :
+	Displaying of new questions and answers
 
-An important design decision we made is to achieve displaying the new questions and answers without having the user load a new a page  and instead changing the content of the current page with appropriate methods.
+Option 1: Loading of a new site
 
-## User Evaluation
+	+ easy (no new knowledge would have been required)
+	- not visually appealing and not in line with current standards
+
+Option 2: Changing the content of the visual elements
+
+	+ visually appealing -> better user experience
+	- a bit more difficult (knowledge had to be aquired)
+
+Decision: Option 2
+	
+	The increase in visual appeal and user experience was worth the little extra effort required to accomplish option 2.
+
+#### Key Design Decision 2 :
+	More than one category per question or not
+
+Option 1: 1 question can only belong to one category
+
+	+ easy database query as only one table would be needed for the questions
+  	- questions can only belong to category -> questions have less potential use
+
+Option 2: 1 question can belong to multiple categories
+
+	+ singular questions have more potential use
+  	- more database tables are required, making the query more complex	and challenging
+
+Decision: Option 2
+	
+	The added potential use questions might have, while not necessarily used, was worth the increase in complexity.
+
+## Inspiration and Tools
+
+#### Guides that were provided during the lessons and on moodle.
+
+Mainly used to get started with the programm and as foundation for the webapp.
+Especially the entry "Full-stack web development".
+
+#### ChatGPT and Stackoverflow
+
+Mainly used to learn CSS and how to make the sign up and login interface as well as rarely for problem solving and debugging during the development process.
 
 ## Goals
-- planned:<br>
-  - Establishing and Integrating the DB<br>
-  - Completing the core gameplay functions
-  - visually pleasing design
-  - enabling users to choose from categories
-  - (user login)
-  - API 
-  - Integrating the the score to the DB
-- achieved:<br>
-  - Establishing and Integrating the DB<br>
-  - Completing the core gameplay functions
-  - visually pleasing design not complete
-  - enabling users to choose from categories
-  - user login
-  - API
--  missed:<br>
-  - Integrating the the score to the DB
-  - visually pleasing design not complete
+planned:<br>
 
+	-establishing and Integrating the DB<br>
+	-completing the core gameplay functions
+	-visually pleasing design
+	-enabling users to choose from categories
+	-(user login)
+	-API
+	-Integrating the score to the DB
+
+achieved:<br>
+
+	-establishing and Integrating the DB
+	-completing the core gameplay functions
+	-visually pleasing design not complete
+	-enabling users to choose from categories
+	-user login
+	-API
+
+missed:<br>
+
+	-integrating the score to the DB
+	-visually pleasing design not complete
 
 ## Individual contribution
+
+Frontend and design work was primarily done by Peer Schüßler.
+
+Database and backend work was primarily done by Oliver Hartmann.
+
+However almost everything was discussed together and sometimes work was done in the others area.
 
